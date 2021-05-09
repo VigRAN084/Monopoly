@@ -8,10 +8,12 @@ public class Player {
             "4: Unmortgage",
             "5: Quit Playing Game"
     };
+
     private String piece;
     private int money;
     private int spaceCurrentlyOn = 1;
     private boolean myTurn = false;
+    private Square square = null;
 
     public Player() {}
 
@@ -47,6 +49,7 @@ public class Player {
         this.myTurn = myTurn;
     }
 
+
     public void playTurn() {
         if (!this.isMyTurn()) return;
         System.out.println("Player " + piece + "'s turn");
@@ -73,4 +76,20 @@ public class Player {
         }
         return optionNum;
     }
+
+    public void roll () {
+        int dice1 = diceValue();
+        int dice2 = diceValue();
+        int sum = dice1 + dice2;
+        int newPosition = this.spaceCurrentlyOn + sum;
+        if (newPosition > 40) {
+            this.spaceCurrentlyOn -= 40;
+        }
+        Square squareXY = Board.newBoard.getSquare(this.spaceCurrentlyOn);
+    }
+
+    public int diceValue () {
+        return (int)((Math.random() * 6) + 1);
+    }
+
 }

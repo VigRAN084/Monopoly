@@ -1,9 +1,10 @@
 public class Monopoly {
+
     private Player p1;
     private Player p2;
 
     public void playGame() {
-        Board b = new Board();
+        Board b = Board.newBoard;
         addPlayers();
         boolean gameNotWon = false;
         Player currPlayer = p1;

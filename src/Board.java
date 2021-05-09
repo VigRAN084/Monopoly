@@ -1,8 +1,11 @@
 import java.util.*;
 public class Board {
 
+    public static Board newBoard = new Board();
+
     private Square[][] squares = new Square[11][11];
 
+    Hashtable<Integer,int[]> positionMap = new Hashtable<Integer,int[]>();
     //Left Column
     Square SQ_0_0 = new Square(Square.TYPE_FREEPARKING, "Jail", 0, 0, 0, 0, false, 21);
     Square SQ_1_0 = new Square (Square.TYPE_PROPERTY, "Wardell Arena", 17, 75, 123, 140, true, 20);
@@ -53,7 +56,12 @@ public class Board {
     Square SQ_10_1 = new Square(Square.TYPE_PROPERTY, "Retro Apartments", 14, 59, 102, 111, true, 10);
 
 
-    public Board (){
+    public Board () {
+        initializeSquares();
+        initializePositionMap();
+    }
+
+    public void initializeSquares() {
         squares[0][0] = SQ_0_0;
         squares[0][1] = SQ_0_1;
         squares[0][2] = SQ_0_2;
@@ -67,7 +75,7 @@ public class Board {
         squares[0][10] = SQ_0_10;
         squares[1][0] = SQ_1_0;
         squares[2][0] = SQ_2_0;
-        squares[3][0] = SQ_3_10;
+        squares[3][0] = SQ_3_0;
         squares[4][0] = SQ_4_0;
         squares[5][0] = SQ_5_0;
         squares[6][0] = SQ_6_0;
@@ -98,6 +106,67 @@ public class Board {
             for (int j = 1; j < 10; j++) {
                 squares[i][j] = Square.blankSquare();
             }
+        }
+    }
+
+    public void initializePositionMap() {
+        positionMap.put(1,new int[]{10,10});
+        positionMap.put(2,new int[]{10,9});
+        positionMap.put(3,new int[]{10,8});
+        positionMap.put(4,new int[]{10,7});
+        positionMap.put(5,new int[]{10,6});
+        positionMap.put(6,new int[]{10,5});
+        positionMap.put(7,new int[]{10,4});
+        positionMap.put(8,new int[]{10,3});
+        positionMap.put(9,new int[]{10,2});
+        positionMap.put(10,new int[]{10,1});
+        positionMap.put(11,new int[]{10,0});
+
+        positionMap.put(12,new int[]{9,0});
+        positionMap.put(13,new int[]{8,0});
+        positionMap.put(14,new int[]{7,0});
+        positionMap.put(15,new int[]{6,0});
+        positionMap.put(16,new int[]{5,0});
+        positionMap.put(17,new int[]{4,0});
+        positionMap.put(18,new int[]{3,0});
+        positionMap.put(19,new int[]{2,0});
+        positionMap.put(20,new int[]{1,0});
+
+        positionMap.put(21,new int[]{0,0});
+        positionMap.put(22,new int[]{0,1});
+        positionMap.put(23,new int[]{0,2});
+        positionMap.put(24,new int[]{0,3});
+        positionMap.put(25,new int[]{0,4});
+        positionMap.put(26,new int[]{0,5});
+        positionMap.put(27,new int[]{0,6});
+        positionMap.put(28,new int[]{0,7});
+        positionMap.put(29,new int[]{0,8});
+        positionMap.put(30,new int[]{0,9});
+        positionMap.put(31,new int[]{0,10});
+
+        positionMap.put(32,new int[]{1,10});
+        positionMap.put(33,new int[]{2,10});
+        positionMap.put(34,new int[]{3,10});
+        positionMap.put(35,new int[]{4,10});
+        positionMap.put(36,new int[]{5,10});
+        positionMap.put(37,new int[]{6,10});
+        positionMap.put(38,new int[]{7,10});
+        positionMap.put(39,new int[]{8,10});
+        positionMap.put(40,new int[]{9,10});
+    }
+
+    public Square getSquare(int x, int y) {
+        if (x < 11 && y < 11 && x >= 0 && y >= 0){
+            return squares[x][y];
+        }
+        else return null;
+    }
+
+    public Square getSquare(int position) {
+        int[] xycoords = positionMap.get(position);
+        if (xycoords == null) return null;
+        else{
+            return getSquare(xycoords[0], xycoords[1]);
         }
     }
 
