@@ -13,14 +13,35 @@ public class Square {
     private String type;
     private String name;
     private int rent;
-    private int morgageValue;
+    private int mortgageValue;
     private int housePrice;
     private boolean isAvailable;
-    private int boardSpaceNumber;
+    private int squareNumber;
+    private int landValue;
+
     private int houses;
     private int hotel;
     private int railroad;
     private Player ownedBy;
     private boolean mortgaged;
-    private int landValue;
+
+    public Square(){}
+
+    public Square (String type, String name, int rent, int mortgageValue, int housePrice,
+                   int landValue, boolean isAvailable, int squareNumber) {
+        this.type = type;
+        this.name = name;
+        this.rent = rent;
+        this.mortgageValue = mortgageValue;
+        this.housePrice = housePrice;
+        this.landValue = landValue;
+        this.isAvailable = isAvailable;
+        this.squareNumber = squareNumber;
+    }
+
+    public static Square blankSquare() {
+        Square s = new Square();
+        s.name = "   ";
+        return s;
+    }
 }
