@@ -110,19 +110,38 @@ public class Player implements Pieces{
         currSquare.setOwnedBy(null);
         setSquare(Board.newBoard.getSquare(newPosition));
         System.out.println("Moving to Position: " + this.square.getPosition() + " Name: "  + this.square.getName());
-        if (this.square.getType().equals(Square.TYPE_PROPERTY) && this.square.isAvailable()) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Would you like to buy this property? (Y/n)");
-            String decisionToBuy = scanner.nextLine();
-            if (decisionToBuy.equalsIgnoreCase("Y")) {
-                buyProperty(this.square);
-            }
+        if (this.square.getType().equals(Square.TYPE_PROPERTY)) {
+            if(this.square.isAvailable()) {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Would you like to buy this property for " + this.square.getPropertyValue() + " (Y/n)");
+                String decisionToBuy = scanner.nextLine();
+                if (decisionToBuy.equalsIgnoreCase("Y")) {
+                    buyProperty(this.square);
+                }
+            } else if (!this.square.isAvailable() && !this.square.isMortgaged()){
+                Player owner = this.square.getOwnedBy();
+                System.out.println("You owe " + owner.getName() + " " + this.square.getRent());
 
+            }
         }
     }
+
+    private boolean rentProperty(Square s) {
+        Player owner = this.square.getOwnedBy();
+        int rent = this.square.getRent();
+        System.out.println("You owe " + owner.getName() + " " + rent);
+        int currentBalance = this.getMoney();
+        if (currentBalance >= rent) {
+            return true;
+        } else {
+            System.out.println("You don't have enough balance to pay the rent");
+            return false;
+        }
+    }
+
     private boolean buyProperty(Square s) {
         int currentBalance = this.getMoney();
-        int propertyValue = s.getLandValue();
+        int propertyValue = s.getPropertyValue();
         if (propertyValue <= currentBalance){
             s.setAvailable(false);
             s.setOwnedBy(this);
@@ -131,6 +150,7 @@ public class Player implements Pieces{
             ownedProperties.add(s);
             return true;
         }
+        System.out.println("You don't have any balance to buy this property");
         return false;
     }
 

@@ -18,14 +18,22 @@ public class Square {
     private int housePrice;
     private boolean isAvailable;
     private int position;
-    private int landValue;
+    private int propertyValue;
     private Player ownedBy;
     private Player playerOnSpace;
+    private boolean mortgaged;
 
     private int houses;
     private int hotel;
     private int railroad;
-    private boolean mortgaged;
+
+    public boolean isMortgaged() {
+        return mortgaged;
+    }
+
+    public void setMortgaged(boolean mortgaged) {
+        this.mortgaged = mortgaged;
+    }
 
     public Player getPlayerOnSpace() {
         return playerOnSpace;
@@ -83,12 +91,12 @@ public class Square {
         isAvailable = available;
     }
 
-    public int getLandValue() {
-        return landValue;
+    public int getPropertyValue() {
+        return propertyValue;
     }
 
-    public void setLandValue(int landValue) {
-        this.landValue = landValue;
+    public void setPropertyValue(int propertyValue) {
+        this.propertyValue = propertyValue;
     }
 
     public int getPosition() {
@@ -110,13 +118,13 @@ public class Square {
     public Square(){}
 
     public Square (String type, String name, int rent, int mortgageValue, int housePrice,
-                   int landValue, boolean isAvailable, int position) {
+                   int propertyValue, boolean isAvailable, int position) {
         this.type = type;
         this.name = name;
         this.rent = rent;
         this.mortgageValue = mortgageValue;
         this.housePrice = housePrice;
-        this.landValue = landValue;
+        this.propertyValue = propertyValue;
         this.isAvailable = isAvailable;
         this.position = position;
     }
