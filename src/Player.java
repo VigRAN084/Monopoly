@@ -11,7 +11,6 @@ public class Player {
 
     private String piece;
     private int money;
-    private int spaceCurrentlyOn = 1;
     private boolean myTurn = false;
     private Square square = null;
 
@@ -33,14 +32,6 @@ public class Player {
         this.money = money;
     }
 
-    public int getSpaceCurrentlyOn() {
-        return spaceCurrentlyOn;
-    }
-
-    public void setSpaceCurrentlyOn(int spaceCurrentlyOn) {
-        this.spaceCurrentlyOn = spaceCurrentlyOn;
-    }
-
     public boolean isMyTurn() {
         return myTurn;
     }
@@ -49,11 +40,22 @@ public class Player {
         this.myTurn = myTurn;
     }
 
+    public Square getSquare() {
+        return square;
+    }
+
+    public void setSquare(Square square) {
+        this.square = square;
+        this.square.setOwnedBy(this);
+    }
 
     public void playTurn() {
         if (!this.isMyTurn()) return;
         System.out.println("Player " + piece + "'s turn");
         int option = promptOption();
+        if (option == 1){
+            roll();
+        }
     }
 
     private int promptOption() {
@@ -81,11 +83,16 @@ public class Player {
         int dice1 = diceValue();
         int dice2 = diceValue();
         int sum = dice1 + dice2;
-        int newPosition = this.spaceCurrentlyOn + sum;
+        System.out.println("Rolling ... dice1: " + dice1 + " , dice2: " + dice2);
+        Square currSquare = this.square;
+        int currPosition = currSquare.getPosition();
+        int newPosition = currPosition + sum;
         if (newPosition > 40) {
-            this.spaceCurrentlyOn -= 40;
+            newPosition -= 40;
         }
-        Square squareXY = Board.newBoard.getSquare(this.spaceCurrentlyOn);
+        currSquare.setOwnedBy(null);
+        setSquare(Board.newBoard.getSquare(newPosition));
+        System.out.println("Moving to Position: " + this.square.getPosition() + " Name: "  + this.square.getName());
     }
 
     public int diceValue () {

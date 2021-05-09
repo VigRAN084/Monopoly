@@ -17,19 +17,91 @@ public class Square {
     private int mortgageValue;
     private int housePrice;
     private boolean isAvailable;
-    private int squareNumber;
+    private int position;
     private int landValue;
+    private Player ownedBy;
 
     private int houses;
     private int hotel;
     private int railroad;
-    private Player ownedBy;
     private boolean mortgaged;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getRent() {
+        return rent;
+    }
+
+    public void setRent(int rent) {
+        this.rent = rent;
+    }
+
+    public int getMortgageValue() {
+        return mortgageValue;
+    }
+
+    public void setMortgageValue(int mortgageValue) {
+        this.mortgageValue = mortgageValue;
+    }
+
+    public int getHousePrice() {
+        return housePrice;
+    }
+
+    public void setHousePrice(int housePrice) {
+        this.housePrice = housePrice;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public int getLandValue() {
+        return landValue;
+    }
+
+    public void setLandValue(int landValue) {
+        this.landValue = landValue;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public Player getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(Player ownedBy) {
+        this.ownedBy = ownedBy;
+    }
 
     public Square(){}
 
     public Square (String type, String name, int rent, int mortgageValue, int housePrice,
-                   int landValue, boolean isAvailable, int squareNumber) {
+                   int landValue, boolean isAvailable, int position) {
         this.type = type;
         this.name = name;
         this.rent = rent;
@@ -37,7 +109,7 @@ public class Square {
         this.housePrice = housePrice;
         this.landValue = landValue;
         this.isAvailable = isAvailable;
-        this.squareNumber = squareNumber;
+        this.position = position;
     }
 
     public static Square blankSquare() {
@@ -49,10 +121,14 @@ public class Square {
     public String toString() {
         String s = this.name;
         if (!s.equals(BLANK)){
-            if(this.squareNumber < 10){
-                s = this.squareNumber + " ";
+            if (this.ownedBy != null) {
+                s = this.ownedBy.getPiece() + " ";
             } else {
-                s = this.squareNumber + "";
+                if(this.position < 10){
+                    s = this.position + " ";
+                } else {
+                    s = this.position + "";
+                }
             }
         }
         return s;
