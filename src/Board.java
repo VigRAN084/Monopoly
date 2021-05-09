@@ -52,7 +52,8 @@ public class Board {
     Square SQ_10_2 = new Square(Square.TYPE_CardDraw, "Chance", 0,0,0,0,false, 9);
     Square SQ_10_1 = new Square(Square.TYPE_PROPERTY, "Retro Apartments", 14, 59, 102, 111, true, 10);
 
-    public void drawBoard (){
+
+    public Board (){
         squares[0][0] = SQ_0_0;
         squares[0][1] = SQ_0_1;
         squares[0][2] = SQ_0_2;
@@ -100,5 +101,13 @@ public class Board {
         }
     }
 
+    public void printBoard() {
+        for (Square[] arr: squares){
+            for (Square s: arr){
+                System.out.print(s.toString() + " ");
+            }
+            System.out.println();
+        }
+    }
 
 }

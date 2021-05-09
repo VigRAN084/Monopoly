@@ -1,4 +1,5 @@
 public class Square {
+    public static final String BLANK = "  ";
     public static String TYPE_PROPERTY = "Property";
     public static String TYPE_JAIL = "Jail";
     public static String TYPE_GO = "Go";
@@ -41,7 +42,19 @@ public class Square {
 
     public static Square blankSquare() {
         Square s = new Square();
-        s.name = "   ";
+        s.name = BLANK;
+        return s;
+    }
+
+    public String toString() {
+        String s = this.name;
+        if (!s.equals(BLANK)){
+            if(this.squareNumber < 10){
+                s = this.squareNumber + " ";
+            } else {
+                s = this.squareNumber + "";
+            }
+        }
         return s;
     }
 }
