@@ -173,7 +173,7 @@ public class Board {
     public void printBoard() {
         for (Square[] arr: squares){
             for (Square s: arr){
-                System.out.print(s.toString() + " ");
+                System.out.print(s.printSquare() + " ");
             }
             System.out.println();
         }

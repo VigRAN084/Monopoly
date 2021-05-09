@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player implements Pieces{
@@ -14,6 +15,7 @@ public class Player implements Pieces{
     private boolean myTurn = false;
     private Square square = null;
     private String owner;
+    private ArrayList<Square> ownedProperties = new ArrayList<>();
 
     public Player() {}
 
@@ -56,7 +58,7 @@ public class Player implements Pieces{
 
     public void setSquare(Square square) {
         this.square = square;
-        this.square.setOwnedBy(this);
+        this.square.setPlayerOnSpace(this);
     }
 
     public void playTurn() {
@@ -66,6 +68,11 @@ public class Player implements Pieces{
         if (option == 1){
             roll();
         }
+        System.out.println("Player " + this.getName() + " summary:");
+        System.out.println("\nMoney: " + this.getMoney());
+        System.out.println("Jail Cards Owned: ");
+        System.out.println("Land Owned: " + this.ownedProperties);
+        System.out.println();
     }
 
     private int promptOption() {
@@ -103,6 +110,28 @@ public class Player implements Pieces{
         currSquare.setOwnedBy(null);
         setSquare(Board.newBoard.getSquare(newPosition));
         System.out.println("Moving to Position: " + this.square.getPosition() + " Name: "  + this.square.getName());
+        if (this.square.getType().equals(Square.TYPE_PROPERTY) && this.square.isAvailable()) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Would you like to buy this property? (Y/n)");
+            String decisionToBuy = scanner.nextLine();
+            if (decisionToBuy.equalsIgnoreCase("Y")) {
+                buyProperty(this.square);
+            }
+
+        }
+    }
+    private boolean buyProperty(Square s) {
+        int currentBalance = this.getMoney();
+        int propertyValue = s.getLandValue();
+        if (propertyValue <= currentBalance){
+            s.setAvailable(false);
+            s.setOwnedBy(this);
+            int newBalance = currentBalance - propertyValue;
+            this.setMoney(newBalance);
+            ownedProperties.add(s);
+            return true;
+        }
+        return false;
     }
 
     public int diceValue () {

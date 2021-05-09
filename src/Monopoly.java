@@ -12,6 +12,9 @@ public class Monopoly {
             currPlayer.playTurn();
             currPlayer = togglePlayer();
             board.printBoard();
+            System.out.println();
+            System.out.println("=====================");
+            System.out.println();
         }
     }
 

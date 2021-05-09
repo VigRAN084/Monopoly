@@ -20,11 +20,20 @@ public class Square {
     private int position;
     private int landValue;
     private Player ownedBy;
+    private Player playerOnSpace;
 
     private int houses;
     private int hotel;
     private int railroad;
     private boolean mortgaged;
+
+    public Player getPlayerOnSpace() {
+        return playerOnSpace;
+    }
+
+    public void setPlayerOnSpace(Player playerOnSpace) {
+        this.playerOnSpace = playerOnSpace;
+    }
 
     public String getType() {
         return type;
@@ -119,10 +128,14 @@ public class Square {
     }
 
     public String toString() {
+        return this.position + ": " + this.name;
+    }
+
+    public String printSquare() {
         String s = this.name;
         if (!s.equals(BLANK)){
-            if (this.ownedBy != null) {
-                s = this.ownedBy.getName() + " ";
+            if (this.playerOnSpace != null) {
+                s = this.playerOnSpace.getName() + " ";
             } else {
                 if(this.position < 10){
                     s = this.position + " ";
