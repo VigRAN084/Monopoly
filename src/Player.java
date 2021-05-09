@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Player {
+public class Player implements Pieces{
     public static String[] PLAY_OPTIONS = {
             "1: Roll",
             "2: Buy Houses or Hotels",
@@ -9,19 +9,20 @@ public class Player {
             "5: Quit Playing Game"
     };
 
-    private String piece;
+    private String name;
     private int money;
     private boolean myTurn = false;
     private Square square = null;
+    private String owner;
 
     public Player() {}
 
-    public String getPiece() {
-        return piece;
+    public String getName() {
+        return name;
     }
 
-    public void setPiece(String piece) {
-        this.piece = piece;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getMoney() {
@@ -40,6 +41,15 @@ public class Player {
         this.myTurn = myTurn;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    @Override
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     public Square getSquare() {
         return square;
     }
@@ -51,7 +61,7 @@ public class Player {
 
     public void playTurn() {
         if (!this.isMyTurn()) return;
-        System.out.println("Player " + piece + "'s turn");
+        System.out.println("Player " + name + "'s turn");
         int option = promptOption();
         if (option == 1){
             roll();

@@ -20,13 +20,13 @@ public class Monopoly {
 
         p1 = new Player();
         p1.setMoney(1500);
-        p1.setPiece("A");
+        p1.setName("A");
         p1.setSquare(s);
         p1.setMyTurn(true);
 
         p2 = new Player();
         p2.setMoney(1500);
-        p2.setPiece("B");
+        p2.setName("B");
         p2.setSquare(s);
     }
 

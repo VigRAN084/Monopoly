@@ -122,7 +122,7 @@ public class Square {
         String s = this.name;
         if (!s.equals(BLANK)){
             if (this.ownedBy != null) {
-                s = this.ownedBy.getPiece() + " ";
+                s = this.ownedBy.getName() + " ";
             } else {
                 if(this.position < 10){
                     s = this.position + " ";
