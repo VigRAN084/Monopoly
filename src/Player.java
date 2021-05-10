@@ -58,7 +58,15 @@ public class Player implements Pieces{
 
     public void setSquare(Square square) {
         this.square = square;
-        this.square.setPlayerOnSpace(this);
+        this.square.addPlayerOnSpace(this);
+    }
+
+    public void credit(int money) {
+        this.money += money;
+    }
+
+    public void debit(int money) {
+        this.money -= money;
     }
 
     public void playTurn() {
@@ -69,7 +77,7 @@ public class Player implements Pieces{
             roll();
         }
         System.out.println("Player " + this.getName() + " summary:");
-        System.out.println("\nMoney: " + this.getMoney());
+        System.out.println("\nMoney: $" + this.getMoney());
         System.out.println("Jail Cards Owned: ");
         System.out.println("Land Owned: " + this.ownedProperties);
         System.out.println();
@@ -97,6 +105,7 @@ public class Player implements Pieces{
     }
 
     public void roll () {
+        Board board = Board.newBoard;
         int dice1 = diceValue();
         int dice2 = diceValue();
         int sum = dice1 + dice2;
@@ -106,14 +115,16 @@ public class Player implements Pieces{
         int newPosition = currPosition + sum;
         if (newPosition > 40) {
             newPosition -= 40;
+            this.credit(200);
         }
-        currSquare.setOwnedBy(null);
-        setSquare(Board.newBoard.getSquare(newPosition));
+        currSquare.removePlayerOnSpace(this);
+        Square newSquare = board.getSquare(newPosition);
+        setSquare(newSquare);
         System.out.println("Moving to Position: " + this.square.getPosition() + " Name: "  + this.square.getName());
         if (this.square.getType().equals(Square.TYPE_PROPERTY)) {
             if(this.square.isAvailable()) {
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Would you like to buy this property for " + this.square.getPropertyValue() + " (Y/n)");
+                System.out.println("Would you like to buy this property for $" + this.square.getPropertyValue() + " (Y/n)");
                 String decisionToBuy = scanner.nextLine();
                 if (decisionToBuy.equalsIgnoreCase("Y")) {
                     buyProperty(this.square);
@@ -121,7 +132,7 @@ public class Player implements Pieces{
             } else if (!this.square.isAvailable() && !this.square.isMortgaged()){
                 Player owner = this.square.getOwnedBy();
                 System.out.println("You owe " + owner.getName() + " " + this.square.getRent());
-
+                rentProperty(this.square);
             }
         }
     }
@@ -132,6 +143,8 @@ public class Player implements Pieces{
         System.out.println("You owe " + owner.getName() + " " + rent);
         int currentBalance = this.getMoney();
         if (currentBalance >= rent) {
+            this.debit(rent);
+            owner.credit(rent);
             return true;
         } else {
             System.out.println("You don't have enough balance to pay the rent");
@@ -145,8 +158,7 @@ public class Player implements Pieces{
         if (propertyValue <= currentBalance){
             s.setAvailable(false);
             s.setOwnedBy(this);
-            int newBalance = currentBalance - propertyValue;
-            this.setMoney(newBalance);
+            this.debit(propertyValue);
             ownedProperties.add(s);
             return true;
         }

@@ -25,11 +25,11 @@ public class Board {
     Square SQ_0_2 = new Square(Square.TYPE_CardDraw, "Chance", 0, 0, 0, 0, false, 23);
     Square SQ_0_3 = new Square(Square.TYPE_PROPERTY, "Fremont Avenue", 22, 90, 140, 155, true, 24);
     Square SQ_0_4 = new Square(Square.TYPE_PROPERTY, "Calculus Mansion", 25, 102, 140, 155, true, 25);
-    Square SQ_0_5 = new Square(Square.TYPE_PROPERTY, "Gomes Railroad", 29, 96, 0,150, false, 26);
+    Square SQ_0_5 = new Square(Square.TYPE_PROPERTY, "Gomes Railroad", 29, 96, 0,150, true, 26);
     Square SQ_0_6 = new Square(Square.TYPE_PROPERTY, "Hopkin's Boulevard", 27, 106, 140, 170, true, 27);
     Square SQ_0_7 = new Square(Square.TYPE_PROPERTY, "Green Town Home",27, 106, 140, 170, true, 28);
     Square SQ_0_8 = new Square(Square.TYPE_UTILITIES, "H20 Aqueducts", 0,0,0,75, true, 29);
-    Square SQ_0_9 = new Square(Square.TYPE_PROPERTY, "California Parkway",27, 106, 140, 170, true, 28);
+    Square SQ_0_9 = new Square(Square.TYPE_PROPERTY, "California Parkway",27, 106, 140, 170, true, 30);
     Square SQ_0_10 = new Square(Square.TYPE_GOTOJAIL, "Go To Jail", 0,0,0,0,false, 31);
 
     //Right Column

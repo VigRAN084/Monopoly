@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Square {
     public static final String BLANK = "  ";
     public static String TYPE_PROPERTY = "Property";
@@ -20,7 +22,7 @@ public class Square {
     private int position;
     private int propertyValue;
     private Player ownedBy;
-    private Player playerOnSpace;
+    private ArrayList<Player> playersOnSpace = new ArrayList<>();
     private boolean mortgaged;
 
     private int houses;
@@ -35,12 +37,12 @@ public class Square {
         this.mortgaged = mortgaged;
     }
 
-    public Player getPlayerOnSpace() {
-        return playerOnSpace;
+    public ArrayList<Player> getPlayersOnSpace() {
+        return playersOnSpace;
     }
 
-    public void setPlayerOnSpace(Player playerOnSpace) {
-        this.playerOnSpace = playerOnSpace;
+    public void setPlayersOnSpace(ArrayList<Player> playersOnSpace) {
+        this.playersOnSpace = playersOnSpace;
     }
 
     public String getType() {
@@ -142,8 +144,14 @@ public class Square {
     public String printSquare() {
         String s = this.name;
         if (!s.equals(BLANK)){
-            if (this.playerOnSpace != null) {
-                s = this.playerOnSpace.getName() + " ";
+            if (this.playersOnSpace.size()>0) {
+                s = "";
+                for(Player p: playersOnSpace ){
+                    s += p.getName() + "";
+                }
+                if (s.length() < 2){
+                    s += " ";
+                }
             } else {
                 if(this.position < 10){
                     s = this.position + " ";
@@ -153,5 +161,11 @@ public class Square {
             }
         }
         return s;
+    }
+    public void addPlayerOnSpace(Player p){
+        this.playersOnSpace.add(p);
+    }
+    public void removePlayerOnSpace(Player p) {
+        this.playersOnSpace.remove(p);
     }
 }
