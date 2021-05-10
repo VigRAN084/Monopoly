@@ -105,11 +105,36 @@ public class Player implements Pieces{
     }
 
     public void roll () {
-        Board board = Board.newBoard;
         int dice1 = diceValue();
         int dice2 = diceValue();
         int sum = dice1 + dice2;
+        boolean isDouble = (dice1 == dice2);
         System.out.println("Rolling ... dice1: " + dice1 + " , dice2: " + dice2);
+        movePlayer(sum);
+        System.out.println("Moving to Position: " + this.square.getPosition() + " Name: "  + this.square.getName());
+        if (this.square.getType().equals(Square.TYPE_PROPERTY)) {
+            buyOrRentProperty();
+        } else if (this.square.getType().equals(Square.TYPE_TAX)) {
+            //@TODO
+        } else if (this.square.getType().equals(Square.TYPE_GOTOJAIL)) {
+            //@TODO
+        } else if (this.square.getType().equals(Square.TYPE_JAIL)) {
+            //@TODO
+        } else if (this.square.getType().equals(Square.TYPE_UTILITIES)) {
+            //@TODO
+        } else if (this.square.getType().equals(Square.TYPE_NOTHING)) {
+            //@TODO
+        } else if (this.square.getType().equals(Square.TYPE_CardDraw)) {
+            //@TODO
+        } else if (this.square.getType().equals(Square.TYPE_FREEPARKING)) {
+            //@TODO
+        } else if (this.square.getType().equals(Square.TYPE_GO)) {
+            //@TODO
+        }
+    }
+
+    private void movePlayer(int sum) {
+        Board board = Board.newBoard;
         Square currSquare = this.square;
         int currPosition = currSquare.getPosition();
         int newPosition = currPosition + sum;
@@ -120,20 +145,20 @@ public class Player implements Pieces{
         currSquare.removePlayerOnSpace(this);
         Square newSquare = board.getSquare(newPosition);
         setSquare(newSquare);
-        System.out.println("Moving to Position: " + this.square.getPosition() + " Name: "  + this.square.getName());
-        if (this.square.getType().equals(Square.TYPE_PROPERTY)) {
-            if(this.square.isAvailable()) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Would you like to buy this property for $" + this.square.getPropertyValue() + " (Y/n)");
-                String decisionToBuy = scanner.nextLine();
-                if (decisionToBuy.equalsIgnoreCase("Y")) {
-                    buyProperty(this.square);
-                }
-            } else if (!this.square.isAvailable() && !this.square.isMortgaged()){
-                Player owner = this.square.getOwnedBy();
-                System.out.println("You owe " + owner.getName() + " " + this.square.getRent());
-                rentProperty(this.square);
+    }
+
+    private void buyOrRentProperty() {
+        if(this.square.isAvailable()) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Would you like to buy this property for $" + this.square.getPropertyValue() + " (Y/n)");
+            String decisionToBuy = scanner.nextLine();
+            if (decisionToBuy.equalsIgnoreCase("Y")) {
+                buyProperty(this.square);
             }
+        } else if (!this.square.isAvailable() && !this.square.isMortgaged()){
+            Player owner = this.square.getOwnedBy();
+            System.out.println("You owe " + owner.getName() + " " + this.square.getRent());
+            rentProperty(this.square);
         }
     }
 
