@@ -16,6 +16,7 @@ public class Player implements Pieces{
     private Square square = null;
     private String owner;
     private ArrayList<Square> ownedProperties = new ArrayList<>();
+    private boolean hasLostGame = false;
 
     public Player() {}
 
@@ -61,30 +62,34 @@ public class Player implements Pieces{
         this.square.addPlayerOnSpace(this);
     }
 
+    public boolean hasLostGame() {
+        return hasLostGame;
+    }
+
+    public void setHasLostGame(boolean hasLostGame) {
+        this.hasLostGame = hasLostGame;
+    }
+
     private void credit(double m) {
         this.money += m;
     }
 
     private void debit(double m) {
-        if (hasFunds(m, this.money)) {
-            raiseFunds();
-        }
         this.money -= m;
     }
 
-    private boolean hasFunds(double m, double p) {
-        return m > p;
+    private boolean hasFunds(double m) {
+        return this.money > m;
     }
 
-    private boolean raiseFunds() {
+    private void raiseFunds() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Would you like to mortgage or sell any one of your properties? (Y/n): ");
         String response = scanner.nextLine();
         if (response.equalsIgnoreCase("Y")){
             //@TODO
-            return true;
         } else {
-            return false;
+            this.hasLostGame = true;
         }
     }
 
@@ -179,7 +184,11 @@ public class Player implements Pieces{
         else {
             tax = 200;
         }
-        this.debit(tax);
+        if (hasFunds(tax))
+            this.debit(tax);
+        else {
+            raiseFunds();
+        }
     }
 
     private void buyOrRentProperty() {
@@ -197,33 +206,30 @@ public class Player implements Pieces{
         }
     }
 
-    private boolean rentProperty(Square s) {
+    private void rentProperty(Square s) {
         Player owner = this.square.getOwnedBy();
-        int rent = this.square.getRent();
+        double rent = this.square.getRent();
         System.out.println("You owe " + owner.getName() + " " + rent);
-        double currentBalance = this.getMoney();
-        if (currentBalance >= rent) {
+        if (hasFunds(rent)) {
             this.debit(rent);
             owner.credit(rent);
-            return true;
         } else {
             System.out.println("You don't have enough balance to pay the rent");
-            return false;
+            raiseFunds();
         }
     }
 
-    private boolean buyProperty(Square s) {
-        double currentBalance = this.getMoney();
-        int propertyValue = s.getPropertyValue();
-        if (propertyValue <= currentBalance){
+    private void buyProperty(Square s) {
+        double propertyValue = s.getPropertyValue();
+        if (hasFunds(propertyValue)){
             s.setAvailable(false);
             s.setOwnedBy(this);
             this.debit(propertyValue);
             ownedProperties.add(s);
-            return true;
+        } else {
+            System.out.println("You don't have any balance to buy this property");
+            raiseFunds();
         }
-        System.out.println("You don't have any balance to buy this property");
-        return false;
     }
 
     public int diceValue () {

@@ -3,13 +3,17 @@ public class Monopoly {
     private Player p1;
     private Player p2;
     Board board = Board.newBoard;
+    public static double INITIAL_MONEY = 10;
 
     public void playGame() {
         addPlayers();
-        boolean gameNotWon = false;
         Player currPlayer = p1;
-        while (!gameNotWon) {
+        while (true) {
             currPlayer.playTurn();
+            if (currPlayer.hasLostGame()) {
+                System.out.println(currPlayer.getName() + " has lost the game");
+                break;
+            }
             currPlayer = togglePlayer();
             board.printBoard();
             System.out.println();
@@ -22,13 +26,13 @@ public class Monopoly {
         Square s = board.getSquare(1);
 
         p1 = new Player();
-        p1.setMoney(1500);
+        p1.setMoney(INITIAL_MONEY);
         p1.setName("A");
         p1.setSquare(s);
         p1.setMyTurn(true);
 
         p2 = new Player();
-        p2.setMoney(1500);
+        p2.setMoney(INITIAL_MONEY);
         p2.setName("B");
         p2.setSquare(s);
     }
