@@ -83,14 +83,34 @@ public class Player implements Pieces{
     }
 
     private void raiseFunds() {
+        if (!ownsProperties()) {
+            System.out.println("Unable to raise funds since you do not have any properties");
+            this.hasLostGame = true;
+            return;
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.println("Would you like to mortgage or sell any one of your properties? (Y/n): ");
         String response = scanner.nextLine();
         if (response.equalsIgnoreCase("Y")){
-            //@TODO
+            System.out.println("Would you like to mortgage or sell? Select '1' for mortgage " +
+                    "and '2' for sell");
+            int userResponse = scanner.nextInt();
+            if (userResponse == 1) {
+                mortgage();
+            } else {
+                sell();
+            }
         } else {
             this.hasLostGame = true;
         }
+    }
+
+    private void sell() {
+        //@TODO
+    }
+
+    private void mortgage() {
+        //@TODO
     }
 
     public void playTurn() {
@@ -232,8 +252,12 @@ public class Player implements Pieces{
         }
     }
 
-    public int diceValue () {
+    private int diceValue () {
         return (int)((Math.random() * 6) + 1);
+    }
+
+    private boolean ownsProperties() {
+        return this.ownedProperties.size() > 0;
     }
 
 }
