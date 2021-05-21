@@ -3,7 +3,7 @@ public class Monopoly {
     private Player p1;
     private Player p2;
     Board board = Board.newBoard;
-    public static double INITIAL_MONEY = 10;
+    public static double INITIAL_MONEY = 200;
 
     public void playGame() {
         addPlayers();
@@ -35,6 +35,9 @@ public class Monopoly {
         p2.setMoney(INITIAL_MONEY);
         p2.setName("B");
         p2.setSquare(s);
+
+        p1.setOpponent(p2);
+        p2.setOpponent(p1);
     }
 
     private Player togglePlayer() {

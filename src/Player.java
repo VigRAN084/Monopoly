@@ -17,6 +17,7 @@ public class Player implements Pieces{
     private String owner;
     private ArrayList<Square> ownedProperties = new ArrayList<>();
     private boolean hasLostGame = false;
+    private Player opponent;
 
     public Player() {}
 
@@ -70,6 +71,14 @@ public class Player implements Pieces{
         this.hasLostGame = hasLostGame;
     }
 
+    public Player getOpponent() {
+        return opponent;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
+    }
+
     private void credit(double m) {
         this.money += m;
     }
@@ -82,9 +91,11 @@ public class Player implements Pieces{
         return this.money > m;
     }
 
-    private void raiseFunds() {
-        if (!ownsProperties()) {
-            System.out.println("Unable to raise funds since you do not have any properties");
+    private void raiseFunds(double amount) {
+        double totalFunds = totalPropertyValue() + this.money;
+        if (totalFunds < amount) {
+            System.out.println("Unable to raise funds since your total property worth + current funds " +
+                    "is less than the amount needed");
             this.hasLostGame = true;
             return;
         }
@@ -105,8 +116,52 @@ public class Player implements Pieces{
         }
     }
 
+    public int totalPropertyValue() {
+        int count = 0;
+        for (Square s : this.ownedProperties) {
+            count += s.getPropertyValue();
+        }
+        return count;
+    }
+
     private void sell() {
-        //@TODO
+        Scanner scanner = new Scanner (System.in);
+        System.out.println("Which property would you like to sell? Enter the index: ");
+        for (int i = 0; i < this.ownedProperties.size(); i++) {
+            System.out.println(i + ". " + this.ownedProperties.get(i).getName());
+        }
+        int input = scanner.nextInt();
+        System.out.println("Would you like to sell the property to the bank or the opponent? (1: opponent; 2: bank");
+        int buyer = scanner.nextInt();
+        Square property = this.ownedProperties.get(input);
+        int propertyValue = property.getPropertyValue();
+        boolean defaultingToBank = false;
+        if (buyer == 1) {
+            System.out.println(this.opponent.getName() + ", would you like to buy this property? (Y/n)");
+            Scanner sc = new Scanner(System.in);
+            String opponentResponse = sc.nextLine();
+            if (opponentResponse.equalsIgnoreCase("Y")) {
+                boolean hasFunds = this.opponent.hasFunds(propertyValue);
+                if (!hasFunds) {
+                    defaultingToBank = true;
+                }
+                else {
+                    this.opponent.buyProperty(property);
+                    this.ownedProperties.remove(input);
+                    credit(propertyValue);
+                }
+            } else {
+                System.out.println(this.name + ", you cannot sell the property to your opponent. Choosing bank as the default");
+                defaultingToBank = true;
+            }
+        }
+        if (buyer == 2 || defaultingToBank) {
+            this.credit(propertyValue);
+            property.setAvailable(true);
+            property.setOwnedBy(null);
+            this.ownedProperties.remove(input);
+        }
+
     }
 
     private void mortgage() {
@@ -191,7 +246,7 @@ public class Player implements Pieces{
         setSquare(newSquare);
     }
 
-    private void payTax() {
+    public void payTax() {
         Scanner scanner = new Scanner (System.in);
         System.out.println("You have landed on a tax square. You can either pay 10 % of your net worth or $200. " +
                 "Enter 'Y' for paying 10% and 'n' for $200. If you don't have enough for the 200 ");
@@ -207,11 +262,11 @@ public class Player implements Pieces{
         if (hasFunds(tax))
             this.debit(tax);
         else {
-            raiseFunds();
+            raiseFunds(tax);
         }
     }
 
-    private void buyOrRentProperty() {
+    public void buyOrRentProperty() {
         if(this.square.isAvailable()) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Would you like to buy this property for $" + this.square.getPropertyValue() + " (Y/n)");
@@ -226,7 +281,7 @@ public class Player implements Pieces{
         }
     }
 
-    private void rentProperty(Square s) {
+    public void rentProperty(Square s) {
         Player owner = this.square.getOwnedBy();
         double rent = this.square.getRent();
         System.out.println("You owe " + owner.getName() + " " + rent);
@@ -235,11 +290,11 @@ public class Player implements Pieces{
             owner.credit(rent);
         } else {
             System.out.println("You don't have enough balance to pay the rent");
-            raiseFunds();
+            raiseFunds(rent);
         }
     }
 
-    private void buyProperty(Square s) {
+    public void buyProperty(Square s) {
         double propertyValue = s.getPropertyValue();
         if (hasFunds(propertyValue)){
             s.setAvailable(false);
@@ -248,7 +303,7 @@ public class Player implements Pieces{
             ownedProperties.add(s);
         } else {
             System.out.println("You don't have any balance to buy this property");
-            raiseFunds();
+            raiseFunds(propertyValue);
         }
     }
 
