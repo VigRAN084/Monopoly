@@ -18,6 +18,8 @@ public class Player implements Pieces{
     private ArrayList<Square> ownedProperties = new ArrayList<>();
     private boolean hasLostGame = false;
     private Player opponent;
+    private Board board;
+    private boolean inJail = false;
 
     public Player() {}
 
@@ -91,6 +93,22 @@ public class Player implements Pieces{
         return this.money > m;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public boolean isInJail() {
+        return inJail;
+    }
+
+    public void setInJail(boolean inJail) {
+        this.inJail = inJail;
+    }
+
     private void raiseFunds(double amount) {
         double totalFunds = totalPropertyValue() + this.money;
         if (totalFunds < amount) {
@@ -147,7 +165,7 @@ public class Player implements Pieces{
                     defaultingToBank = true;
                 }
                 else {
-                    this.opponent.buyProperty(property);
+                    this.opponent.buy(property);
                     this.ownedProperties.remove(input);
                     if (property.isMortgaged()) {
                         credit(propertyValue - property.getMortgageValue());
@@ -227,6 +245,15 @@ public class Player implements Pieces{
         int sum = dice1 + dice2;
         boolean isDouble = (dice1 == dice2);
         System.out.println("Rolling ... dice1: " + dice1 + " , dice2: " + dice2);
+        if (this.inJail) {
+            if (!isDouble) {
+                System.out.println("You are currently in jail. You need to roll " +
+                        "a double to exit.");
+                return;
+            } else {
+                System.out.println("Congratulations! You just rolled a double and exited jail.");
+            }
+        }
         movePlayer(sum);
         System.out.println("Moving to Position: " + this.square.getPosition() + " Name: "  + this.square.getName());
         if (this.square.getType().equals(Square.TYPE_PROPERTY)) {
@@ -234,33 +261,40 @@ public class Player implements Pieces{
         } else if (this.square.getType().equals(Square.TYPE_TAX)) {
             payTax();
         } else if (this.square.getType().equals(Square.TYPE_GOTOJAIL)) {
-            //@TODO
+            movePlayer(11, false);
+            setInJail(true);
         } else if (this.square.getType().equals(Square.TYPE_JAIL)) {
             //@TODO
         } else if (this.square.getType().equals(Square.TYPE_UTILITIES)) {
-            //@TODO
-        } else if (this.square.getType().equals(Square.TYPE_NOTHING)) {
-            //@TODO
-        } else if (this.square.getType().equals(Square.TYPE_CardDraw)) {
+            buyOrRentUtilities(sum);
+        }  else if (this.square.getType().equals(Square.TYPE_CardDraw)) {
             //@TODO
         } else if (this.square.getType().equals(Square.TYPE_FREEPARKING)) {
-            //@TODO
+            //do nothing
         } else if (this.square.getType().equals(Square.TYPE_GO)) {
-            //@TODO
+            //do nothing - crediting player $200 is already done in movePlayer method
         }
     }
 
-    private void movePlayer(int sum) {
-        Board board = Board.newBoard;
+    private void movePlayer(int pos) {
+        movePlayer(pos, true);
+    }
+
+    private void movePlayer(int pos, boolean isOffset) {
+        int newPosition = -1;
         Square currSquare = this.square;
-        int currPosition = currSquare.getPosition();
-        int newPosition = currPosition + sum;
+        if (isOffset) {
+            int currPosition = currSquare.getPosition();
+            newPosition = currPosition + pos;
+        } else {
+            newPosition = pos;
+        }
         if (newPosition > 40) {
             newPosition -= 40;
             this.credit(200);
         }
         currSquare.removePlayerOnSpace(this);
-        Square newSquare = board.getSquare(newPosition);
+        Square newSquare = this.board.getSquare(newPosition);
         setSquare(newSquare);
     }
 
@@ -297,18 +331,37 @@ public class Player implements Pieces{
             System.out.println("Would you like to buy this property for $" + this.square.getPropertyValue() + " (Y/n)");
             String decisionToBuy = scanner.nextLine();
             if (decisionToBuy.equalsIgnoreCase("Y")) {
-                buyProperty(this.square);
+                buy(this.square);
             }
         } else if (!this.square.isAvailable() && !this.square.isMortgaged()){
             Player owner = this.square.getOwnedBy();
             System.out.println("You owe " + owner.getName() + " " + this.square.getRent());
-            rentProperty(this.square);
+            rent(this.square, -1);
         }
     }
 
-    public void rentProperty(Square s) {
-        Player owner = this.square.getOwnedBy();
-        double rent = this.square.getRent();
+    public void buyOrRentUtilities(int diceVal) {
+        if(this.square.isAvailable()) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Would you like to buy this utility for $" + this.square.getPropertyValue() + " (Y/n)");
+            String decisionToBuy = scanner.nextLine();
+            if (decisionToBuy.equalsIgnoreCase("Y")) {
+                buy(this.square);
+            }
+        } else if (!this.square.isAvailable() && !this.square.isMortgaged()){
+            Player owner = this.square.getOwnedBy();
+            rent( this.square, diceVal);
+        }
+    }
+
+    public void rent(Square s,int diceVal) {
+        Player owner = s.getOwnedBy();
+        double rent = 0;
+        if (this.square.getType().equals(Square.TYPE_UTILITIES)) {
+            rent = 4*diceVal;
+        } else {
+            rent = s.getRent();
+        }
         System.out.println("You owe " + owner.getName() + " " + rent);
         boolean haveMoney = hasFunds(rent);
         if (!haveMoney) {
@@ -325,7 +378,7 @@ public class Player implements Pieces{
         }
     }
 
-    public void buyProperty(Square s) {
+    public void buy(Square s) {
         double propertyValue = s.getPropertyValue();
         boolean haveMoney = hasFunds(propertyValue);
         if (!haveMoney){

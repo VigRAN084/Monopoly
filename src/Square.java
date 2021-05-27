@@ -10,7 +10,6 @@ public class Square {
     public static String TYPE_CardDraw = "CardDraw";
     public static String TYPE_TAX = "Tax";
     public static String TYPE_UTILITIES = "Utilities";
-    public static String TYPE_NOTHING = "Nothing";
 
 
     private String type;
