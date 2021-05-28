@@ -7,7 +7,7 @@ public class Board {
 
     Hashtable<Integer,int[]> positionMap = new Hashtable<Integer,int[]>();
     //Left Column
-    Square SQ_0_0 = new Square(Square.TYPE_FREEPARKING, "Jail", 0, 0, 0, 0, false, 21);
+    Square SQ_0_0 = new Square(Square.TYPE_FREEPARKING, "Free Parking", 0, 0, 0, 0, false, 21);
     Square SQ_1_0 = new Square (Square.TYPE_PROPERTY, "Wardell Arena", 17, 75, 123, 140, true, 20);
     Square SQ_2_0 = new Square(Square.TYPE_PROPERTY, "Paper Center", 14, 68, 115, 130, true, 19);
     Square SQ_3_0 = new Square(Square.TYPE_CardDraw, "Chance", 0,0,0,0, false, 18);

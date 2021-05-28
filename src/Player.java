@@ -254,6 +254,7 @@ public class Player implements Pieces{
                 return;
             } else {
                 System.out.println("Congratulations! You just rolled a double and exited jail.");
+                this.setInJail(false);
             }
         }
         movePlayer(sum);
@@ -282,34 +283,25 @@ public class Player implements Pieces{
     //                                            "Move 3 spaces forward", "Do Nothing", "Draw Another Chance Card"};
     //-*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*
     public void chance() {
-        System.out.println("You have landed on a chance card. Please enter a random letter to continue");
+        System.out.println("You have landed on a chance card. Please enter a random letter to draw a chance card");
         Scanner sc = new Scanner(System.in);
         String s = sc.nextLine();
         int chanceNum = (int)(Math.random()*chanceCards.length);
-        System.out.println(chanceCards[chanceNum]);
+        System.out.println("Your draw was: " + chanceCards[chanceNum]);
         if (chanceNum == 0) {
             this.credit(200);
-        }
-        else if (chanceNum == 1) {
+        } else if (chanceNum == 1) {
             this.debit(200);
-        }
-        else if (chanceNum == 2) {
+        } else if (chanceNum == 2) {
             movePlayer(11, false);
             setInJail(true);
-        }
-        else if (chanceNum == 3) {
-            this.debit(200);
-        }
-        else if (chanceNum == 4) {
+        } else if (chanceNum == 3) {
             this.movePlayer(41);
-        }
-        else if (chanceNum == 5) {
+        } else if (chanceNum == 4) {
             this.movePlayer(3, true);
-        }
-        else if (chanceNum == 6) {
+        } else if (chanceNum == 5) {
             //do nothing
-        }
-        else {
+        } else {
             chance();
         }
     }
@@ -329,6 +321,7 @@ public class Player implements Pieces{
         }
         if (newPosition > 40) {
             newPosition -= 40;
+            System.out.println("Congratulations!!!!!!!! You just passed go and were awarded $200!");
             this.credit(200);
         }
         currSquare.removePlayerOnSpace(this);
