@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.lang.Math.*;
 public class Player implements Pieces{
     public static String[] PLAY_OPTIONS = {
             "1: Roll",
@@ -9,6 +9,8 @@ public class Player implements Pieces{
             "4: Unmortgage",
             "5: Quit Playing Game"
     };
+    public static String[] chanceCards = {"Get $200", "Pay $200", "Go To Jail", "Go To 'Go'",
+                                            "Move 3 spaces forward", "Do Nothing", "Draw Another Chance Card"};
 
     private String name;
     private double money;
@@ -252,6 +254,7 @@ public class Player implements Pieces{
                 return;
             } else {
                 System.out.println("Congratulations! You just rolled a double and exited jail.");
+                this.setInJail(false);
             }
         }
         movePlayer(sum);
@@ -268,11 +271,38 @@ public class Player implements Pieces{
         } else if (this.square.getType().equals(Square.TYPE_UTILITIES)) {
             buyOrRentUtilities(sum);
         }  else if (this.square.getType().equals(Square.TYPE_CardDraw)) {
-            //@TODO
+            chance();
         } else if (this.square.getType().equals(Square.TYPE_FREEPARKING)) {
             //do nothing
         } else if (this.square.getType().equals(Square.TYPE_GO)) {
             //do nothing - crediting player $200 is already done in movePlayer method
+        }
+    }
+
+    //public static String[] chanceCards = {"Get $200", "Pay $200", "Go To Jail", "Go To 'Go'",
+    //                                            "Move 3 spaces forward", "Do Nothing", "Draw Another Chance Card"};
+    //-*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*
+    public void chance() {
+        System.out.println("You have landed on a chance card. Please enter a random letter to draw a chance card");
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine();
+        int chanceNum = (int)(Math.random()*chanceCards.length);
+        System.out.println("Your draw was: " + chanceCards[chanceNum]);
+        if (chanceNum == 0) {
+            this.credit(200);
+        } else if (chanceNum == 1) {
+            this.debit(200);
+        } else if (chanceNum == 2) {
+            movePlayer(11, false);
+            setInJail(true);
+        } else if (chanceNum == 3) {
+            this.movePlayer(41);
+        } else if (chanceNum == 4) {
+            this.movePlayer(3, true);
+        } else if (chanceNum == 5) {
+            //do nothing
+        } else {
+            chance();
         }
     }
 
@@ -291,12 +321,15 @@ public class Player implements Pieces{
         }
         if (newPosition > 40) {
             newPosition -= 40;
+            System.out.println("Congratulations!!!!!!!! You just passed go and were awarded $200!");
             this.credit(200);
         }
         currSquare.removePlayerOnSpace(this);
         Square newSquare = this.board.getSquare(newPosition);
         setSquare(newSquare);
     }
+
+
 
     public void payTax() {
         Scanner scanner = new Scanner (System.in);
