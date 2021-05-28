@@ -213,11 +213,31 @@ public class Player implements Pieces{
         if (option == 1){
             roll();
         }
+        else if (option == 5) {
+            if (quitGame()) {
+                return;
+            } else {
+                playTurn();
+            }
+        }
         System.out.println("Player " + this.getName() + " summary:");
         System.out.println("\nMoney: $" + this.getMoney());
         System.out.println("Jail Cards Owned: ");
         System.out.println("Land Owned: " + this.ownedProperties);
         System.out.println();
+    }
+
+    private boolean quitGame() {
+        Scanner sc = new Scanner (System.in);
+        System.out.println("Are you sure you would like to quit the game? (Y/n)");
+        String response = sc.nextLine();
+        if (response.equalsIgnoreCase("Y")) {
+            this.setHasLostGame(true);
+            return true;
+        } else {
+            System.out.println("The game will resume");
+            return false;
+        }
     }
 
     private int promptOption() {
