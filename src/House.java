@@ -1,9 +1,9 @@
 public class House extends Square {
-    private int rent;
-    private int mortgageValue;
-    private int housePrice;
-    private int propertyValue;
-    public House (String type, String name, int r, int m, int h, int p, /*int rent, int mortgageValue, int housePrice,
+    private double rent;
+    private double mortgageValue;
+    private double housePrice;
+    private double propertyValue;
+    public House (String type, String name, double r, double m, double h, double p, /*int rent, int mortgageValue, int housePrice,
                   int propertyValue,*/ boolean isAvailable, int position) {
         super(type, name, /*rent, mortgageValue, housePrice, propertyValue,*/ isAvailable, position);
         this.rent = r;
@@ -12,4 +12,36 @@ public class House extends Square {
         this.propertyValue = p;
     }
 
+    public double getRent() {
+        return rent;
+    }
+
+    public void setRent(double rent) {
+        this.rent = rent;
+    }
+
+    public double getMortgageValue() {
+        return mortgageValue;
+    }
+
+    public void setMortgageValue(double mortgageValue) {
+        this.mortgageValue = mortgageValue;
+    }
+
+    public double getHousePrice() {
+        return housePrice;
+    }
+
+    public void setHousePrice(double housePrice) {
+        this.housePrice = housePrice;
+    }
+
+
+    public double getPropertyValue() {
+        return propertyValue;
+    }
+
+    public void setPropertyValue(double propertyValue) {
+        this.propertyValue = propertyValue;
+    }
 }

@@ -14,12 +14,12 @@ public class Square {
 
     private String type;
     private String name;
-    private double rent;
+    /*private double rent;
     private int mortgageValue;
-    private int housePrice;
+    private int housePrice;*/
     private boolean isAvailable;
     private int position;
-    private int propertyValue;
+    //private int propertyValue;
     private Player ownedBy;
     private ArrayList<Player> playersOnSpace = new ArrayList<>();
     private boolean mortgaged;
@@ -60,29 +60,7 @@ public class Square {
         this.name = name;
     }
 
-    public double getRent() {
-        return rent;
-    }
 
-    public void setRent(double rent) {
-        this.rent = rent;
-    }
-
-    public int getMortgageValue() {
-        return mortgageValue;
-    }
-
-    public void setMortgageValue(int mortgageValue) {
-        this.mortgageValue = mortgageValue;
-    }
-
-    public int getHousePrice() {
-        return housePrice;
-    }
-
-    public void setHousePrice(int housePrice) {
-        this.housePrice = housePrice;
-    }
 
     public boolean isAvailable() {
         return isAvailable;
@@ -92,13 +70,6 @@ public class Square {
         isAvailable = available;
     }
 
-    public int getPropertyValue() {
-        return propertyValue;
-    }
-
-    public void setPropertyValue(int propertyValue) {
-        this.propertyValue = propertyValue;
-    }
 
     public int getPosition() {
         return position;
