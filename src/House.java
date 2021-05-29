@@ -12,6 +12,13 @@ public class House extends Square {
         this.propertyValue = p;
     }
 
+    public House() {
+        this.rent = 0;
+        this.mortgageValue = 0;
+        this.housePrice = 0;
+        this.propertyValue = 0;
+    }
+
     public double getRent() {
         return rent;
     }
@@ -44,4 +51,5 @@ public class House extends Square {
     public void setPropertyValue(double propertyValue) {
         this.propertyValue = propertyValue;
     }
+
 }

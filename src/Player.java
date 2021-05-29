@@ -6,8 +6,10 @@ public class Player implements Pieces{
             "1: Roll",
             "2: Buy Houses or Hotels",
             "3: Trade with another Player",
-            "4: Unmortgage",
-            "5: Quit Playing Game"
+            "4: Mortgage A Property",
+            "5: Unmortgage",
+            "6: Quit Playing Game"
+
     };
     public static String[] chanceCards = {"Get $200", "Pay $200", "Go To Jail", "Go To 'Go'",
                                             "Move 3 spaces forward", "Do Nothing", "Draw Another Chance Card"};
@@ -255,7 +257,13 @@ public class Player implements Pieces{
             }
 
         }
+        else if (option == 4) {
+            mortgageProperty();
+        }
         else if (option == 5) {
+
+        }
+        else if (option == 6) {
             if (quitGame()) {
                 return;
             } else {
@@ -267,6 +275,34 @@ public class Player implements Pieces{
         System.out.println("Jail Cards Owned: ");
         System.out.println("Land Owned: " + this.ownedProperties);
         System.out.println();
+    }
+
+    public void mortgageProperty() {
+        if (ownedProperties.size() <= 0) playTurn();
+        else {
+            for (int i = 0; i < ownedProperties.size(); i++) {
+                System.out.println(i + " - " + ownedProperties.get(i).getName());
+            }
+            System.out.println("Which property would you like to mortgage?");
+            Scanner sc = new Scanner (System.in);
+            int ownedPropertyNum = sc.nextInt();
+            Square temp = this.ownedProperties.get(ownedPropertyNum);
+            System.out.println(temp.getName() + " will now be mortgaged. You are allowed to retain " +
+                    "possession of the property, but no rent can be collected. To lift the mortgage, you must pay" +
+                    " back the entirety of the mortgage value plus an additional 10%.");
+            temp.setMortgaged(true);
+        }
+    }
+
+    public void unmortgageProperty() {
+        int count = 0;
+        ArrayList<Square> mortgagedProperties = new ArrayList<>();
+        for (Square s: this.ownedProperties) {
+            if (s.isMortgaged()) {
+
+            }
+        }
+
     }
 
     private boolean quitGame() {
@@ -290,10 +326,10 @@ public class Player implements Pieces{
         boolean validInput = false;
         int optionNum = -1;
         while(!validInput) {
-            System.out.println("Please enter a number between 1 and 5, inclusive");
+            System.out.println("Please enter a number between 1 and 6, inclusive");
             Scanner scanner = new Scanner(System.in);
             optionNum = scanner.nextInt();
-            if (optionNum >= 1 && optionNum <= 5){
+            if (optionNum >= 1 && optionNum <= 6){
                 validInput = true;
             }
             else{
