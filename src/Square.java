@@ -14,12 +14,8 @@ public class Square {
 
     private String type;
     private String name;
-    /*private double rent;
-    private int mortgageValue;
-    private int housePrice;*/
     private boolean isAvailable;
     private int position;
-    //private int propertyValue;
     private Player ownedBy;
     private ArrayList<Player> playersOnSpace = new ArrayList<>();
     private boolean mortgaged;
@@ -117,10 +113,6 @@ public class Square {
                    int propertyValue,*/ boolean isAvailable, int position) {
         this.type = type;
         this.name = name;
-        /*this.rent = rent;
-        this.mortgageValue = mortgageValue;
-        this.housePrice = housePrice;
-        this.propertyValue = propertyValue;*/
         this.isAvailable = isAvailable;
         this.position = position;
     }
