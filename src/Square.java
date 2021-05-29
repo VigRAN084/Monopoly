@@ -14,7 +14,7 @@ public class Square {
 
     private String type;
     private String name;
-    private int rent;
+    private double rent;
     private int mortgageValue;
     private int housePrice;
     private boolean isAvailable;
@@ -24,9 +24,9 @@ public class Square {
     private ArrayList<Player> playersOnSpace = new ArrayList<>();
     private boolean mortgaged;
 
-    private int houses;
-    private int hotel;
-    private int railroad;
+    private int houses = 0;
+    private int hotel = 0;
+    private int railroad = 0;
 
     public boolean isMortgaged() {
         return mortgaged;
@@ -60,11 +60,11 @@ public class Square {
         this.name = name;
     }
 
-    public int getRent() {
+    public double getRent() {
         return rent;
     }
 
-    public void setRent(int rent) {
+    public void setRent(double rent) {
         this.rent = rent;
     }
 
@@ -116,16 +116,40 @@ public class Square {
         this.ownedBy = ownedBy;
     }
 
+    public int getHouses() {
+        return houses;
+    }
+
+    public void setHouses(int houses) {
+        this.houses = houses;
+    }
+
+    public int getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(int hotel) {
+        this.hotel = hotel;
+    }
+
+    public int getRailroad() {
+        return railroad;
+    }
+
+    public void setRailroad(int railroad) {
+        this.railroad = railroad;
+    }
+
     public Square(){}
 
-    public Square (String type, String name, int rent, int mortgageValue, int housePrice,
-                   int propertyValue, boolean isAvailable, int position) {
+    public Square (String type, String name, /*int rent, int mortgageValue, int housePrice,
+                   int propertyValue,*/ boolean isAvailable, int position) {
         this.type = type;
         this.name = name;
-        this.rent = rent;
+        /*this.rent = rent;
         this.mortgageValue = mortgageValue;
         this.housePrice = housePrice;
-        this.propertyValue = propertyValue;
+        this.propertyValue = propertyValue;*/
         this.isAvailable = isAvailable;
         this.position = position;
     }

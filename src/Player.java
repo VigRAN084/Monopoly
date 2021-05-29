@@ -205,13 +205,55 @@ public class Player implements Pieces{
         square.setMortgaged(true);
         this.credit(mortgageValue);
     }
-
+    //wededwedmlwkemdlwekmdlwekdmwlekdmwelkdmwlekmdemdlwdlemdkemlmdlkedlkmldkedwedlkwdlkwdlwldkmeldkw
     public void playTurn() {
         if (!this.isMyTurn()) return;
         System.out.println("Player " + name + "'s turn");
         int option = promptOption();
         if (option == 1){
             roll();
+        }
+        else if (option == 2) {
+            System.out.println("Would you like to add a house or hotel (1/2)?");
+            Scanner scanner = new Scanner(System.in);
+            int response = scanner.nextInt();
+            if (response == 1) {
+                System.out.println(this.ownedProperties);
+                System.out.println("Which property would you like to add a house to?");
+                Scanner sc = new Scanner (System.in);
+                int prop = sc.nextInt();
+                Square temp = this.ownedProperties.get(prop);
+                if (hasFunds(temp.getHousePrice())){
+                    this.debit(temp.getHousePrice());
+                    temp.setHouses(temp.getHouses() + 1);
+                    temp.setRent(temp.getRent() * 1.25);
+                }
+                else {
+                    playTurn();
+                }
+            }
+            else {
+                System.out.println(this.ownedProperties);
+                System.out.println("Which property would you like to add a hotel to?");
+                Scanner sc = new Scanner (System.in);
+                int prop = sc.nextInt();
+                Square temp = this.ownedProperties.get(prop);
+                if (temp.getHouses() >= 4) {
+                    if (hasFunds(temp.getHousePrice())) {
+                        this.debit(temp.getHousePrice());
+                        temp.setHotel(temp.getHotel()+1);
+                        temp.setRent(temp.getRent()*1.5);
+                    }
+                    else {
+                        System.out.println("You don't have the money on hand to pay for a hotel.");
+                        playTurn();
+                    }
+                } else {
+                    System.out.println("You do not have enough houses to buy a hotel!");
+                    playTurn();
+                }
+            }
+
         }
         else if (option == 5) {
             if (quitGame()) {
@@ -457,5 +499,9 @@ public class Player implements Pieces{
     private boolean ownsProperties() {
         return this.ownedProperties.size() > 0;
     }
+
+    /*private void addHouse() {
+        if (this.square)
+    }*/
 
 }
