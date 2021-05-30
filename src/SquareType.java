@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Square {
+public abstract class SquareType {
     public static final String BLANK = "  ";
     public static String TYPE_PROPERTY = "Property";
     public static String TYPE_JAIL = "Jail";
@@ -12,21 +12,17 @@ public class Square {
     public static String TYPE_UTILITIES = "Utilities";
 
 
-    private String type;
+    private String tileType;
     private String name;
-    private int rent;
-    private int mortgageValue;
-    private int housePrice;
     private boolean isAvailable;
     private int position;
-    private int propertyValue;
     private Player ownedBy;
     private ArrayList<Player> playersOnSpace = new ArrayList<>();
     private boolean mortgaged;
 
-    private int houses;
-    private int hotel;
-    private int railroad;
+    private int houses = 0;
+    private int hotel = 0;
+    private int railroad = 0;
 
     public boolean isMortgaged() {
         return mortgaged;
@@ -44,12 +40,12 @@ public class Square {
         this.playersOnSpace = playersOnSpace;
     }
 
-    public String getType() {
-        return type;
+    public String getTileType() {
+        return tileType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTileType(String tileType) {
+        this.tileType = tileType;
     }
 
     public String getName() {
@@ -60,29 +56,7 @@ public class Square {
         this.name = name;
     }
 
-    public int getRent() {
-        return rent;
-    }
 
-    public void setRent(int rent) {
-        this.rent = rent;
-    }
-
-    public int getMortgageValue() {
-        return mortgageValue;
-    }
-
-    public void setMortgageValue(int mortgageValue) {
-        this.mortgageValue = mortgageValue;
-    }
-
-    public int getHousePrice() {
-        return housePrice;
-    }
-
-    public void setHousePrice(int housePrice) {
-        this.housePrice = housePrice;
-    }
 
     public boolean isAvailable() {
         return isAvailable;
@@ -92,13 +66,6 @@ public class Square {
         isAvailable = available;
     }
 
-    public int getPropertyValue() {
-        return propertyValue;
-    }
-
-    public void setPropertyValue(int propertyValue) {
-        this.propertyValue = propertyValue;
-    }
 
     public int getPosition() {
         return position;
@@ -116,25 +83,41 @@ public class Square {
         this.ownedBy = ownedBy;
     }
 
-    public Square(){}
+    public int getHouses() {
+        return houses;
+    }
 
-    public Square (String type, String name, int rent, int mortgageValue, int housePrice,
-                   int propertyValue, boolean isAvailable, int position) {
-        this.type = type;
+    public void setHouses(int houses) {
+        this.houses = houses;
+    }
+
+    public int getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(int hotel) {
+        this.hotel = hotel;
+    }
+
+    public int getRailroad() {
+        return railroad;
+    }
+
+    public void setRailroad(int railroad) {
+        this.railroad = railroad;
+    }
+
+    public SquareType(){}
+
+    public SquareType(String tileType, String name, /*int rent, int mortgageValue, int housePrice,
+                   int propertyValue,*/ boolean isAvailable, int position) {
+        this.tileType = tileType;
         this.name = name;
-        this.rent = rent;
-        this.mortgageValue = mortgageValue;
-        this.housePrice = housePrice;
-        this.propertyValue = propertyValue;
         this.isAvailable = isAvailable;
         this.position = position;
     }
 
-    public static Square blankSquare() {
-        Square s = new Square();
-        s.name = BLANK;
-        return s;
-    }
+
 
     public String toString() {
         return this.position + ": " + this.name;
