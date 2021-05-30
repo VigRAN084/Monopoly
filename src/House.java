@@ -3,12 +3,12 @@ public class House extends SquareType {
     private double mortgageValue;
     private double housePrice;
     private double propertyValue;
-    public House (String type, String name, double r, double m, double h, double p, boolean isAvailable, int position) {
-        super(type, name,  isAvailable, position);
-        this.rent = r;
-        this.mortgageValue = m;
-        this.housePrice = h;
-        this.propertyValue = p;
+    public House (String name, double rent, double mortgageValue, double housePrice, double propertyValue, boolean isAvailable, int position) {
+        super(SquareType.TYPE_PROPERTY, name,  isAvailable, position);
+        this.rent = rent;
+        this.mortgageValue = mortgageValue;
+        this.housePrice = housePrice;
+        this.propertyValue = propertyValue;
     }
 
     public House() {

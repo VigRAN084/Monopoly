@@ -7,7 +7,7 @@ public abstract class SquareType {
     public static String TYPE_GO = "Go";
     public static String TYPE_FREEPARKING = "FreeParking";
     public static String TYPE_GOTOJAIL = "GoToJail";
-    public static String TYPE_CardDraw = "CardDraw";
+    public static String TYPE_CHANCE = "Chance";
     public static String TYPE_TAX = "Tax";
     public static String TYPE_UTILITIES = "Utilities";
 
@@ -150,4 +150,7 @@ public abstract class SquareType {
     public void removePlayerOnSpace(Player p) {
         this.playersOnSpace.remove(p);
     }
+
+
+
 }
