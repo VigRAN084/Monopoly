@@ -140,7 +140,13 @@ public class Player implements Pieces{
     public int totalPropertyValue() {
         int count = 0;
         for (SquareType s : this.ownedProperties) {
-            count += ((House)s).getPropertyValue();
+            double value = 0;
+            if (s.getTileType().equals(SquareType.TYPE_PROPERTY)) {
+                value = ((House)s).getPropertyValue();
+            } else if (s.getTileType().equals(SquareType.TYPE_UTILITIES)) {
+                value = ((Utilities)s).getPropertyValue();
+            }
+            count += value;
         }
         return count;
     }
@@ -406,7 +412,6 @@ public class Player implements Pieces{
 
     //public static String[] chanceCards = {"Get $200", "Pay $200", "Go To Jail", "Go To 'Go'",
     //                                            "Move 3 spaces forward", "Do Nothing", "Draw Another Chance Card"};
-    //-*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*
     public void chance() {
         System.out.println("You have landed on a chance card. Please enter a random letter to draw a chance card");
         Scanner sc = new Scanner(System.in);
@@ -421,9 +426,9 @@ public class Player implements Pieces{
             movePlayer(11, false);
             setInJail(true);
         } else if (chanceNum == 3) {
-            this.movePlayer(41);
+            this.movePlayer(41, false);
         } else if (chanceNum == 4) {
-            this.movePlayer(3, true);
+            this.movePlayer(3);
         } else if (chanceNum == 5) {
             //do nothing
         } else {
