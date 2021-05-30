@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Square {
+public abstract class SquareType {
     public static final String BLANK = "  ";
     public static String TYPE_PROPERTY = "Property";
     public static String TYPE_JAIL = "Jail";
@@ -12,7 +12,7 @@ public class Square {
     public static String TYPE_UTILITIES = "Utilities";
 
 
-    private String type;
+    private String tileType;
     private String name;
     private boolean isAvailable;
     private int position;
@@ -40,12 +40,12 @@ public class Square {
         this.playersOnSpace = playersOnSpace;
     }
 
-    public String getType() {
-        return type;
+    public String getTileType() {
+        return tileType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTileType(String tileType) {
+        this.tileType = tileType;
     }
 
     public String getName() {
@@ -107,21 +107,17 @@ public class Square {
         this.railroad = railroad;
     }
 
-    public Square(){}
+    public SquareType(){}
 
-    public Square (String type, String name, /*int rent, int mortgageValue, int housePrice,
+    public SquareType(String tileType, String name, /*int rent, int mortgageValue, int housePrice,
                    int propertyValue,*/ boolean isAvailable, int position) {
-        this.type = type;
+        this.tileType = tileType;
         this.name = name;
         this.isAvailable = isAvailable;
         this.position = position;
     }
 
-    public static Square blankSquare() {
-        Square s = new Square();
-        s.name = BLANK;
-        return s;
-    }
+
 
     public String toString() {
         return this.position + ": " + this.name;

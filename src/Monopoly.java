@@ -23,19 +23,19 @@ public class Monopoly {
     }
 
     private void addPlayers() {
-        Square s = board.getSquare(1);
+        SquareType s = board.getSquare(1);
 
         p1 = new Player();
         p1.setMoney(INITIAL_MONEY);
         p1.setName("A");
-        p1.setSquare(s);
+        p1.setSquareType(s);
         p1.setMyTurn(true);
         p1.setBoard(this.board);
 
         p2 = new Player();
         p2.setMoney(INITIAL_MONEY);
         p2.setName("B");
-        p2.setSquare(s);
+        p2.setSquareType(s);
         p2.setBoard(this.board);
 
         p1.setOpponent(p2);
