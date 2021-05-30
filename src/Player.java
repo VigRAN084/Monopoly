@@ -368,7 +368,7 @@ public class Player implements Pieces{
             //@TODO
         } else if (this.squareType.getTileType().equals(SquareType.TYPE_UTILITIES)) {
             buyOrRentUtilities(sum);
-        }  else if (this.squareType.getTileType().equals(SquareType.TYPE_CardDraw)) {
+        }  else if (this.squareType.getTileType().equals(SquareType.TYPE_CHANCE)) {
             chance();
         } else if (this.squareType.getTileType().equals(SquareType.TYPE_FREEPARKING)) {
             //do nothing
@@ -474,7 +474,7 @@ public class Player implements Pieces{
     public void buyOrRentUtilities(int diceVal) {
         if(this.squareType.isAvailable()) {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Would you like to buy this utility for $" + ((House) squareType).getPropertyValue() + " (Y/n)");
+            System.out.println("Would you like to buy this utility for $" + ((Utilities)squareType).getPropertyValue() + " (Y/n)");
             String decisionToBuy = scanner.nextLine();
             if (decisionToBuy.equalsIgnoreCase("Y")) {
                 buy(this.squareType);
@@ -536,8 +536,5 @@ public class Player implements Pieces{
         return this.ownedProperties.size() > 0;
     }
 
-    /*private void addHouse() {
-        if (this.squareType)
-    }*/
 
 }
