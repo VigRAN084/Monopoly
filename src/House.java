@@ -3,6 +3,13 @@ public class House extends SquareType {
     private double mortgageValue;
     private double housePrice;
     private double propertyValue;
+
+    private boolean mortgaged;
+
+    private int houses = 0;
+    private int hotel = 0;
+    private int railroad = 0;
+
     public House (String name, double rent, double mortgageValue, double housePrice, double propertyValue, boolean isAvailable, int position) {
         super(SquareType.TYPE_PROPERTY, name,  isAvailable, position);
         this.rent = rent;
@@ -51,5 +58,35 @@ public class House extends SquareType {
         this.propertyValue = propertyValue;
     }
 
+    public boolean isMortgaged() {
+        return mortgaged;
+    }
 
+    public void setMortgaged(boolean mortgaged) {
+        this.mortgaged = mortgaged;
+    }
+
+    public int getHouses() {
+        return houses;
+    }
+
+    public void setHouses(int houses) {
+        this.houses = houses;
+    }
+
+    public int getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(int hotel) {
+        this.hotel = hotel;
+    }
+
+    public int getRailroad() {
+        return railroad;
+    }
+
+    public void setRailroad(int railroad) {
+        this.railroad = railroad;
+    }
 }

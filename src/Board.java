@@ -52,7 +52,7 @@ public class Board {
     SquareType SQ_10_5 = new House("Nevada Street", 9, 53, 99, 109, true, 6);
     SquareType SQ_10_4 = new House("South Railroad", 9, 53, 0, 109, true, 7);
     SquareType SQ_10_3 = new House("Berkeley Avenue", 14, 59, 102, 111, true, 8);
-    SquareType SQ_10_2 = new House("Chance", 0,0,0,0,false, 9);
+    SquareType SQ_10_2 = new Chance(9);
     SquareType SQ_10_1 = new House("Retro Apartments", 14, 59, 102, 111, true, 10);
 
 
