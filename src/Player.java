@@ -4,8 +4,8 @@ import java.util.Scanner;
 public class Player implements Pieces{
     public static String[] PLAY_OPTIONS = {
             "1: Roll",
-            "2: Buy Houses or Hotels",
-            "3: Trade with another Player",
+            "2: Add Houses or Hotels",
+            "3: Trade with opponent",
             "4: Mortgage A Property",
             "5: Unmortgage",
             "6: Quit Playing Game"
@@ -130,7 +130,7 @@ public class Player implements Pieces{
             if (userResponse == 1) {
                 mortgage();
             } else {
-                sell();
+                sell(true);
             }
         } else {
             this.hasLostGame = true;
@@ -151,59 +151,72 @@ public class Player implements Pieces{
         return count;
     }
 
-    private void sell() {
-        Scanner scanner = new Scanner (System.in);
-        System.out.println("Which property would you like to sell? Enter the index: ");
-        for (int i = 0; i < this.ownedProperties.size(); i++) {
-            System.out.println(i + ". " + this.ownedProperties.get(i).getName());
+    private void sell(boolean sellToOpponent) {
+        if (this.ownedProperties.size() == 0) {
+            System.out.println(this.name + ", you don't have any properties to sell!");
+            playTurn();
         }
-        int input = scanner.nextInt();
-        System.out.println("Would you like to sell the property to the bank or the opponent? (1: opponent; 2: bank");
-        int buyer = scanner.nextInt();
-        SquareType property = this.ownedProperties.get(input);
-        double propertyValue = ((House)property).getPropertyValue();
+        else {
+            Scanner scanner = new Scanner (System.in);
+            System.out.println(this.name + ", which property would you like to sell? Enter the index: ");
+            for (int i = 0; i < this.ownedProperties.size(); i++) {
+                System.out.println(i + ". " + this.ownedProperties.get(i).getName());
+            }
+            int input = scanner.nextInt();
+            int buyer = -1;
+            if (sellToOpponent) {
+                buyer = 1;
+            } else {
+                System.out.println("Would you like to sell the property to the bank or the opponent? (1: opponent; 2: bank");
+                buyer = scanner.nextInt();
+            }
 
-        boolean defaultingToBank = false;
-        if (buyer == 1) {
-            System.out.println(this.opponent.getName() + ", would you like to buy this property? (Y/n)");
-            Scanner sc = new Scanner(System.in);
-            String opponentResponse = sc.nextLine();
-            if (opponentResponse.equalsIgnoreCase("Y")) {
-                boolean hasFunds = this.opponent.hasFunds(propertyValue);
-                if (!hasFunds) {
+            SquareType property = this.ownedProperties.get(input);
+            double propertyValue = ((House)property).getPropertyValue();
+
+            boolean defaultingToBank = false;
+            if (buyer == 1) {
+                System.out.println(this.opponent.getName() + ", would you like to buy this property? (Y/n)");
+                Scanner sc = new Scanner(System.in);
+                String opponentResponse = sc.nextLine();
+                if (opponentResponse.equalsIgnoreCase("Y")) {
+                    boolean hasFunds = this.opponent.hasFunds(propertyValue);
+                    if (!hasFunds) {
+                        defaultingToBank = true;
+                    }
+                    else {
+                        double pVal = 0.0;
+                        double mortgageValue = 0.0;
+                        if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY)){
+                            propertyValue = ((House) property).getPropertyValue();
+                            mortgageValue = ((House) property).getMortgageValue();
+                        } else if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_UTILITIES)){
+                            propertyValue = ((Utilities) property).getPropertyValue();
+                        }
+                        this.opponent.buy(property, propertyValue);
+                        this.ownedProperties.remove(input);
+                        if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY) && ((House)property).isMortgaged()) {
+                            credit(propertyValue - mortgageValue);
+                        } else {
+                            credit(propertyValue);
+                        }
+                    }
+                } else {
+                    System.out.println(this.name + ", you cannot sell the property to your opponent. Choosing bank as the default");
                     defaultingToBank = true;
                 }
-                else {
-                    double pVal = 0.0;
-                    double mortgageValue = 0.0;
-                    if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY)){
-                        propertyValue = ((House) property).getPropertyValue();
-                        mortgageValue = ((House) property).getMortgageValue();
-                    } else if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_UTILITIES)){
-                        propertyValue = ((Utilities) property).getPropertyValue();
-                    }
-                    this.opponent.buy(property, propertyValue);
-                    this.ownedProperties.remove(input);
-                    if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY) && ((House)property).isMortgaged()) {
-                        credit(propertyValue - mortgageValue);
-                    } else {
-                        credit(propertyValue);
-                    }
+            }
+            if (buyer == 2 || defaultingToBank) {
+                if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY) && ((House)property).isMortgaged()) {
+                    credit(propertyValue - ((House)property).getMortgageValue());
+                } else {
+                    credit(propertyValue);
                 }
-            } else {
-                System.out.println(this.name + ", you cannot sell the property to your opponent. Choosing bank as the default");
-                defaultingToBank = true;
+                property.setAvailable(true);
+                property.setOwnedBy(null);
+                this.ownedProperties.remove(input);
             }
-        }
-        if (buyer == 2 || defaultingToBank) {
-            if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY) && ((House)property).isMortgaged()) {
-                credit(propertyValue - ((House)property).getMortgageValue());
-            } else {
-                credit(propertyValue);
-            }
-            property.setAvailable(true);
-            property.setOwnedBy(null);
-            this.ownedProperties.remove(input);
+
         }
 
     }
@@ -279,7 +292,7 @@ public class Player implements Pieces{
 
         }
         else if (option == 3) {
-
+            trade();
         }
         else if (option == 4) {
             mortgageProperty();
@@ -299,6 +312,14 @@ public class Player implements Pieces{
         System.out.println("Jail Cards Owned: ");
         System.out.println("Land Owned: " + this.ownedProperties);
         System.out.println();
+    }
+
+    public void trade() {
+        System.out.println(this.name + ", would you like to buy or sell properties? (1/2)");
+        Scanner sc = new Scanner(System.in);
+        int response = sc.nextInt();
+        if (response == 1) this.opponent.sell(true);
+        else this.sell(false);
     }
 
     public void mortgageProperty() {
