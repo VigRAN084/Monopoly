@@ -51,9 +51,5 @@ public class House extends SquareType {
         this.propertyValue = propertyValue;
     }
 
-    public static SquareType blankSquare() {
-        SquareType s = new House();
-        s.setName(BLANK);
-        return s;
-    }
+
 }

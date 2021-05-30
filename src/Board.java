@@ -104,7 +104,7 @@ public class Board {
         squareTypes[9][10] = SQ_9_10;
         for (int i = 1; i < 10; i++) {
             for (int j = 1; j < 10; j++) {
-                squareTypes[i][j] = House.blankSquare();
+                squareTypes[i][j] = BlankSquare.blankSquare();
             }
         }
     }

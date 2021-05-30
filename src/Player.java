@@ -11,8 +11,7 @@ public class Player implements Pieces{
             "6: Quit Playing Game"
 
     };
-    public static String[] chanceCards = {"Get $200", "Pay $200", "Go To Jail", "Go To 'Go'",
-                                            "Move 3 spaces forward", "Do Nothing", "Draw Another Chance Card"};
+
 
     private String name;
     private double money;
@@ -384,8 +383,8 @@ public class Player implements Pieces{
         System.out.println("You have landed on a chance card. Please enter a random letter to draw a chance card");
         Scanner sc = new Scanner(System.in);
         String s = sc.nextLine();
-        int chanceNum = (int)(Math.random()*chanceCards.length);
-        System.out.println("Your draw was: " + chanceCards[chanceNum]);
+        int chanceNum = (int)(Math.random()*Chance.chanceCards.length);
+        System.out.println("Your draw was: " + Chance.chanceCards[chanceNum]);
         if (chanceNum == 0) {
             this.credit(200);
         } else if (chanceNum == 1) {
@@ -480,7 +479,6 @@ public class Player implements Pieces{
                 buy(this.squareType);
             }
         } else if (!this.squareType.isAvailable() && !this.squareType.isMortgaged()){
-            Player owner = this.squareType.getOwnedBy();
             rent( this.squareType, diceVal);
         }
     }
@@ -500,7 +498,7 @@ public class Player implements Pieces{
             raiseFunds(rent);
         }
         haveMoney = hasFunds(rent);
-        if (hasFunds(rent)) {
+        if (haveMoney) {
             this.debit(rent);
             owner.credit(rent);
         } else {
