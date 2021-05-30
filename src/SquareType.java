@@ -18,19 +18,9 @@ public abstract class SquareType {
     private int position;
     private Player ownedBy;
     private ArrayList<Player> playersOnSpace = new ArrayList<>();
-    private boolean mortgaged;
 
-    private int houses = 0;
-    private int hotel = 0;
-    private int railroad = 0;
 
-    public boolean isMortgaged() {
-        return mortgaged;
-    }
 
-    public void setMortgaged(boolean mortgaged) {
-        this.mortgaged = mortgaged;
-    }
 
     public ArrayList<Player> getPlayersOnSpace() {
         return playersOnSpace;
@@ -83,29 +73,9 @@ public abstract class SquareType {
         this.ownedBy = ownedBy;
     }
 
-    public int getHouses() {
-        return houses;
-    }
 
-    public void setHouses(int houses) {
-        this.houses = houses;
-    }
 
-    public int getHotel() {
-        return hotel;
-    }
 
-    public void setHotel(int hotel) {
-        this.hotel = hotel;
-    }
-
-    public int getRailroad() {
-        return railroad;
-    }
-
-    public void setRailroad(int railroad) {
-        this.railroad = railroad;
-    }
 
     public SquareType(){}
 

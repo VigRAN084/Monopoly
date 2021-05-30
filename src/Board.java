@@ -15,7 +15,7 @@ public class Board {
     SquareType SQ_5_0 = new House("Old Railroad", 20, 68, 0, 140, true, 16);
     SquareType SQ_6_0 = new House("Manhattan Terrace", 12, 64, 109, 118, true, 15);
     SquareType SQ_7_0 = new House("Liverpool Boulevard",12, 64, 109, 118, true, 14);
-    SquareType SQ_8_0 = new Utilities(135, "Java Electrics", 0, true);
+    SquareType SQ_8_0 = new Utilities(135, "Java Electrics", 13, true);
     SquareType SQ_9_0 = new House("Carnegie Street", 12, 64, 109, 118, true, 12);
     SquareType SQ_10_0 = new Jail(11);
 
@@ -28,7 +28,7 @@ public class Board {
     SquareType SQ_0_5 = new House("Gomes Railroad", 29, 96, 0,150, true, 26);
     SquareType SQ_0_6 = new House("Hopkin's Boulevard", 27, 106, 140, 170, true, 27);
     SquareType SQ_0_7 = new House("Green Town Home",27, 106, 140, 170, true, 28);
-    SquareType SQ_0_8 = new House("H20 Aqueducts", 0,0,0,75, true, 29);
+    SquareType SQ_0_8 = new Utilities(75, "H20 Aqueducts", 29,true);
     SquareType SQ_0_9 = new House("California Parkway",27, 106, 140, 170, true, 30);
     SquareType SQ_0_10 = new GoToJail(31);
 
@@ -52,7 +52,7 @@ public class Board {
     SquareType SQ_10_5 = new House("Nevada Street", 9, 53, 99, 109, true, 6);
     SquareType SQ_10_4 = new House("South Railroad", 9, 53, 0, 109, true, 7);
     SquareType SQ_10_3 = new House("Berkeley Avenue", 14, 59, 102, 111, true, 8);
-    SquareType SQ_10_2 = new House("Chance", 0,0,0,0,false, 9);
+    SquareType SQ_10_2 = new Chance(9);
     SquareType SQ_10_1 = new House("Retro Apartments", 14, 59, 102, 111, true, 10);
 
 
@@ -104,7 +104,7 @@ public class Board {
         squareTypes[9][10] = SQ_9_10;
         for (int i = 1; i < 10; i++) {
             for (int j = 1; j < 10; j++) {
-                squareTypes[i][j] = House.blankSquare();
+                squareTypes[i][j] = BlankSquare.blankSquare();
             }
         }
     }
