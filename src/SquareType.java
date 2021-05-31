@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public abstract class SquareType {
     public static final String BLANK = "  ";
-    public static String TYPE_PROPERTY = "Property";
     public static String TYPE_JAIL = "Jail";
     public static String TYPE_GO = "Go";
     public static String TYPE_FREEPARKING = "FreeParking";
@@ -12,6 +11,7 @@ public abstract class SquareType {
     public static String TYPE_UTILITIES = "Utilities";
     public static String TYPE_HOUSE = "House";
     public static String TYPE_RAILROAD = "Railroad";
+    public static String TYPE_HOTEL = "Hotel";
 
     private String tileType;
     private String name;
@@ -19,9 +19,6 @@ public abstract class SquareType {
     private int position;
     private Player ownedBy;
     private ArrayList<Player> playersOnSpace = new ArrayList<>();
-
-
-
 
     public ArrayList<Player> getPlayersOnSpace() {
         return playersOnSpace;
@@ -74,10 +71,6 @@ public abstract class SquareType {
         this.ownedBy = ownedBy;
     }
 
-
-
-
-
     public SquareType(){}
 
     public SquareType(String tileType, String name, /*int rent, int mortgageValue, int housePrice,
@@ -90,44 +83,15 @@ public abstract class SquareType {
 
 
 
-    public String toString() {
-        return this.position + ": " + this.name;
-    }
 
-    public String printSquare() {
-        String s = this.name;
-        if (!s.equals(BLANK)){
-            if (this.playersOnSpace.size()>0) {
-                s = "";
-                for(Player p: playersOnSpace ){
-                    s += p.getName() + "";
-                }
-                if (s.length() < 2){
-                    s += " ";
-                }
-            } else {
-                if(this.position < 10){
-                    s = this.position + " ";
-                } else {
-                    s = this.position + "";
-                }
-            }
-        }
-        return s;
-    }
-    public void addPlayerOnSpace(Player p){
-        this.playersOnSpace.add(p);
-    }
-    public void removePlayerOnSpace(Player p) {
-        this.playersOnSpace.remove(p);
-    }
 
     public boolean isProperty() {
-        return (this.getTileType().equals(SquareType.TYPE_HOUSE) || this.getTileType().equals(SquareType.TYPE_RAILROAD));
+        return (this.getTileType().equals(SquareType.TYPE_HOUSE) || this.getTileType().equals(SquareType.TYPE_RAILROAD)
+                || this.getTileType().equals(SquareType.TYPE_HOTEL));
     }
 
     public boolean isHouse() {
-        return (this.getTileType().equals(SquareType.TYPE_HOUSE));
+        return (this.getTileType().equals(SquareType.TYPE_HOUSE) || this.getTileType().equals(SquareType.TYPE_HOTEL));
     }
     public boolean isTax() {
         return (this.getTileType().equals(SquareType.TYPE_TAX));
@@ -149,5 +113,35 @@ public abstract class SquareType {
     }
     public boolean isUtilities() {
         return (this.getTileType().equals(SquareType.TYPE_UTILITIES));
+    }
+    public String toString() {
+        return this.position + ": " + this.name;
+    }
+    public void addPlayerOnSpace(Player p){
+        this.playersOnSpace.add(p);
+    }
+    public void removePlayerOnSpace(Player p) {
+        this.playersOnSpace.remove(p);
+    }
+    public String printSquare() {
+        String s = this.name;
+        if (!s.equals(BLANK)){
+            if (this.playersOnSpace.size()>0) {
+                s = "";
+                for(Player p: playersOnSpace ){
+                    s += p.getName() + "";
+                }
+                if (s.length() < 2){
+                    s += " ";
+                }
+            } else {
+                if(this.position < 10){
+                    s = this.position + " ";
+                } else {
+                    s = this.position + "";
+                }
+            }
+        }
+        return s;
     }
 }

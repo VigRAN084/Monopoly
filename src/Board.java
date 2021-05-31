@@ -162,11 +162,25 @@ public class Board {
         else return null;
     }
 
+    public void setSquare(SquareType s, int x, int y) {
+        if (x < 11 && y < 11 && x >= 0 && y >= 0){
+            squareTypes[x][y] = s;
+        }
+    }
+
     public SquareType getSquare(int position) {
         int[] xycoords = positionMap.get(position);
         if (xycoords == null) return null;
         else{
             return getSquare(xycoords[0], xycoords[1]);
+        }
+    }
+
+    public void setSquare(SquareType s, int position) {
+        int[] xycoords = positionMap.get(position);
+        if (xycoords == null) return;
+        else{
+            setSquare(s, xycoords[0], xycoords[1]);
         }
     }
 

@@ -3,7 +3,7 @@ public class Monopoly {
     private Player p1;
     private Player p2;
     Board board = Board.newBoard;
-    public static double INITIAL_MONEY = 400;
+    public static double INITIAL_MONEY = 1200;
 
     public void playGame() {
         addPlayers();

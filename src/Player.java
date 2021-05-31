@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Player class
+ */
 public class Player implements Pieces{
     public static String[] PLAY_OPTIONS = {
             "1: Roll",
@@ -178,11 +181,13 @@ public class Player implements Pieces{
             movePlayer(11, false);
             setInJail(true);
         } else if (this.squareType.isGo()) {
-            //@TODO
+            //do nothing
         } else if (this.squareType.isUtilities()) {
             buyOrRentUtilities(sum);
-        }  else if (this.squareType.isChance()) {
+        } else if (this.squareType.isChance()) {
             chance();
+        } else if (this.squareType.isJail()) {
+            //do nothing
         } else if (this.squareType.isFreeParking()) {
             //do nothing
         }
@@ -225,7 +230,7 @@ public class Player implements Pieces{
             playTurn();
             return;
         }
-        
+
         int buyer = -1;
         if (sellToOpponent) {
             buyer = 1;
@@ -317,7 +322,7 @@ public class Player implements Pieces{
      * add a house to a property
      */
     private void addHouses() {
-        if (this.ownedProperties.size() == 0) {
+        if (!ownsHouse()) {
             System.out.println("You do not have any properties!");
             playTurn();
         } else {
@@ -335,6 +340,14 @@ public class Player implements Pieces{
             if (haveMoney){
                 this.debit(housePrice);
                 house.addHouse();
+                System.out.println(house.getName() + " now has " + house.getNumHouses() + " houses!");
+                if (house.getNumHouses() >= 4) {
+                    System.out.println("Upgrading to a hotel!!");
+                    Hotel hotel = Hotel.upgradeHouseToHotel(house);
+                    int position = house.getPosition();
+                    getBoard().setSquare(hotel, position);
+                    System.out.println("The current rent on the property is " + hotel.getRent());
+                }
             } else {
                 System.out.println("You don't have any balance to pay tax");
                 playTurn();
@@ -663,6 +676,16 @@ public class Player implements Pieces{
             }
 
         }
+    }
+
+    private boolean ownsHouse() {
+        for (int i = 0; i < this.ownedProperties.size(); i++) {
+            SquareType squareType = this.ownedProperties.get(i);
+            if (squareType.isHouse()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
