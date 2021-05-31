@@ -207,84 +207,96 @@ public class Player implements Pieces{
     }
 
     /**
-     * sell property to bank or opponent
+     * handleSell property to bank or opponent
      * @param sellToOpponent
      */
-    private void sell(boolean sellToOpponent) {
+    private void handleSell(boolean sellToOpponent) {
         if (this.ownedProperties.size() == 0) {
-            System.out.println(this.name + ", you don't have any properties to sell!");
+            System.out.println(this.name + ", you don't have any properties to handleSell!");
             playTurn();
+            return;
         }
-        else {
-            Scanner scanner = new Scanner (System.in);
-            System.out.println(this.name + ", which property would you like to sell (-1 if don't want to sell)? Enter the index: ");
-            for (int i = 0; i < this.ownedProperties.size(); i++) {
-                System.out.println(i + ". " + this.ownedProperties.get(i).getName());
-            }
-            int input = scanner.nextInt();
-            if (input == -1) {
-                System.out.println(this.name + " does not want to sell any properties!");
-                playTurn();
-            }
-            else {
-                int buyer = -1;
-                if (sellToOpponent) {
-                    buyer = 1;
-                } else {
-                    System.out.println("Would you like to sell the property to the bank or the opponent? (1: opponent; 2: bank");
-                    buyer = scanner.nextInt();
-                }
-
-                SquareType property = this.ownedProperties.get(input);
-                double propertyValue = ((Property)property).getPropertyValue();
-
-                boolean defaultBankAsBuyer = false;
-                if (buyer == 1) {
-                    System.out.println(this.opponent.getName() + ", would you like to buy this property? (Y/n)");
-                    Scanner sc = new Scanner(System.in);
-                    String opponentResponse = sc.nextLine();
-                    if (opponentResponse.equalsIgnoreCase("Y")) {
-                        boolean hasFunds = this.opponent.hasFunds(propertyValue);
-                        if (!hasFunds) {
-                            defaultBankAsBuyer = true;
-                        }
-                        else {
-                            double pVal = 0.0;
-                            double mortgageValue = 0.0;
-                            if (property.isProperty()){
-                                propertyValue = ((Property) property).getPropertyValue();
-                                mortgageValue = ((Property) property).getMortgageValue();
-                            } else if (property.isUtilities()){
-                                propertyValue = ((Utilities) property).getPropertyValue();
-                            }
-                            this.opponent.buy(property, propertyValue);
-                            this.ownedProperties.remove(input);
-                            if (property.isProperty() && ((Property)property).isMortgaged()) {
-                                credit(propertyValue - mortgageValue);
-                            } else {
-                                credit(propertyValue);
-                            }
-                        }
-                    } else {
-                        System.out.println(this.name + ", you cannot sell the property to your opponent. Choosing bank as the default");
-                        defaultBankAsBuyer = true;
-                    }
-                }
-                if (buyer == 2 || defaultBankAsBuyer) {
-                    if (property.isProperty() && ((Property)property).isMortgaged()) {
-                        credit(propertyValue - ((Property)property).getMortgageValue());
-                    } else {
-                        credit(propertyValue);
-                    }
-                    property.setAvailable(true);
-                    property.setOwnedBy(null);
-                    this.ownedProperties.remove(input);
-                }
-
-            }
-
+        Scanner scanner = new Scanner (System.in);
+        System.out.println(this.name + ", which property would you like to handleSell (-1 if don't want to handleSell)? Enter the index: ");
+        displayProperties();
+        int propertyIndex = scanner.nextInt();
+        if (propertyIndex == -1) {
+            System.out.println(this.name + " does not want to handleSell any properties!");
+            playTurn();
+            return;
+        }
+        
+        int buyer = -1;
+        if (sellToOpponent) {
+            buyer = 1;
+        } else {
+            System.out.println("Would you like to handleSell the property to the bank or the opponent? (1: opponent; 2: bank");
+            buyer = scanner.nextInt();
         }
 
+        SquareType property = this.ownedProperties.get(propertyIndex);
+        double propertyValue = ((Property)property).getPropertyValue();
+
+        boolean defaultBankAsBuyer = false;
+        if (buyer == 1) {
+            System.out.println(this.opponent.getName() + ", would you like to buy this property? (Y/n)");
+            Scanner sc = new Scanner(System.in);
+            String opponentResponse = sc.nextLine();
+            if (opponentResponse.equalsIgnoreCase("Y")) {
+                boolean hasFunds = this.opponent.hasFunds(propertyValue);
+                if (!hasFunds) {
+                    defaultBankAsBuyer = true;
+                }
+                else {
+                    sellToOpponent( property, propertyValue,propertyIndex);
+                }
+            } else {
+                System.out.println(this.name + ", you cannot sell the property to your opponent. Choosing bank as the default");
+                defaultBankAsBuyer = true;
+            }
+        }
+        if (buyer == 2 || defaultBankAsBuyer) {
+            sellToBank(property, propertyValue, propertyIndex);
+        }
+    }
+    /**
+     * Sell property to bank
+     * @param property
+     * @param propertyValue
+     * @param propertyIndex
+     */
+    private void sellToBank(SquareType property, double propertyValue, int propertyIndex) {
+        if (property.isProperty() && ((Property)property).isMortgaged()) {
+            credit(propertyValue - ((Property)property).getMortgageValue());
+        } else {
+            credit(propertyValue);
+        }
+        property.setAvailable(true);
+        property.setOwnedBy(null);
+        this.ownedProperties.remove(propertyIndex);
+    }
+
+    /**
+     * sell property to opponent
+     * @param property
+     * @param propertyValue
+     * @param propertyIndex
+     */
+    private void sellToOpponent( SquareType property, double propertyValue, int propertyIndex) {
+        double mortgageValue = 0.0;
+        if (property.isProperty()){
+            propertyValue = ((Property) property).getPropertyValue();
+            mortgageValue = ((Property) property).getMortgageValue();
+        } else if (property.isUtilities()){
+            propertyValue = ((Utilities) property).getPropertyValue();
+        }
+        this.opponent.buy(property, propertyValue);
+        this.ownedProperties.remove(propertyIndex);
+        if (property.isProperty() && ((Property)property).isMortgaged()) {
+            credit(propertyValue - mortgageValue);
+        } else {
+            credit(propertyValue);
+        }
     }
 
     /**
@@ -334,11 +346,11 @@ public class Player implements Pieces{
      * trade properties with the opponent
      */
     private void trade() {
-        System.out.println(this.name + ", would you like to buy or sell properties? (1/2)");
+        System.out.println(this.name + ", would you like to buy or handleSell properties? (1/2)");
         Scanner sc = new Scanner(System.in);
         int response = sc.nextInt();
-        if (response == 1) this.opponent.sell(true);
-        else this.sell(false);
+        if (response == 1) this.opponent.handleSell(true);
+        else this.handleSell(false);
     }
 
     /**
@@ -612,16 +624,16 @@ public class Player implements Pieces{
             return;
         }
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Would you like to mortgage or sell any one of your properties? (Y/n): ");
+        System.out.println("Would you like to mortgage or handleSell any one of your properties? (Y/n): ");
         String response = scanner.nextLine();
         if (response.equalsIgnoreCase("Y")){
-            System.out.println("Would you like to mortgage or sell? Select '1' for mortgage " +
-                    "and '2' for sell");
+            System.out.println("Would you like to mortgage or handleSell? Select '1' for mortgage " +
+                    "and '2' for handleSell");
             int userResponse = scanner.nextInt();
             if (userResponse == 1) {
                 mortgage();
             } else {
-                sell(true);
+                handleSell(true);
             }
         } else {
             this.hasLostGame = true;
