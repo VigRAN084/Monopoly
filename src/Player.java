@@ -141,9 +141,9 @@ public class Player implements Pieces{
         int count = 0;
         for (SquareType s : this.ownedProperties) {
             double value = 0;
-            if (s.getTileType().equals(SquareType.TYPE_PROPERTY)) {
+            if (s.isProperty()) {
                 value = ((Property)s).getPropertyValue();
-            } else if (s.getTileType().equals(SquareType.TYPE_UTILITIES)) {
+            } else if (s.isUtilities()) {
                 value = ((Utilities)s).getPropertyValue();
             }
             count += value;
@@ -192,15 +192,15 @@ public class Player implements Pieces{
                         else {
                             double pVal = 0.0;
                             double mortgageValue = 0.0;
-                            if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY)){
+                            if (property.isProperty()){
                                 propertyValue = ((Property) property).getPropertyValue();
                                 mortgageValue = ((Property) property).getMortgageValue();
-                            } else if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_UTILITIES)){
+                            } else if (property.isUtilities()){
                                 propertyValue = ((Utilities) property).getPropertyValue();
                             }
                             this.opponent.buy(property, propertyValue);
                             this.ownedProperties.remove(input);
-                            if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY) && ((Property)property).isMortgaged()) {
+                            if (property.isProperty() && ((Property)property).isMortgaged()) {
                                 credit(propertyValue - mortgageValue);
                             } else {
                                 credit(propertyValue);
@@ -212,7 +212,7 @@ public class Player implements Pieces{
                     }
                 }
                 if (buyer == 2 || defaultingToBank) {
-                    if (property.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY) && ((Property)property).isMortgaged()) {
+                    if (property.isProperty() && ((Property)property).isMortgaged()) {
                         credit(propertyValue - ((Property)property).getMortgageValue());
                     } else {
                         credit(propertyValue);
@@ -242,7 +242,17 @@ public class Player implements Pieces{
     private void displayProperties() {
         for (int i = 0; i < this.ownedProperties.size(); i++) {
             SquareType squareType = this.ownedProperties.get(i);
-            if (squareType.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY)) {
+            if (squareType.isProperty()) {
+                System.out.println(i + ". " + squareType.getName());
+            }
+
+        }
+    }
+
+    private void displayHouses() {
+        for (int i = 0; i < this.ownedProperties.size(); i++) {
+            SquareType squareType = this.ownedProperties.get(i);
+            if (squareType.isHouse()) {
                 System.out.println(i + ". " + squareType.getName());
             }
 
@@ -257,46 +267,7 @@ public class Player implements Pieces{
             roll();
         }
         else if (option == 2) {
-            System.out.println("Would you like to add a house or hotel (1/2)?");
-            Scanner scanner = new Scanner(System.in);
-            int response = scanner.nextInt();
-            if (response == 1) {
-                displayProperties();
-                System.out.println("Which property would you like to add a house to?");
-                Scanner sc = new Scanner (System.in);
-                int prop = sc.nextInt();
-                Property temp = ((Property)this.ownedProperties.get(prop));
-                if (hasFunds(((Property)temp).getHousePrice())){
-                    this.debit(temp.getHousePrice());
-                    temp.setHouses(temp.getHouses() + 1);
-                    temp.setRent(temp.getRent() * 1.25);
-                }
-                else {
-                    playTurn();
-                }
-            }
-            else {
-                displayProperties();
-                System.out.println("Which property would you like to add a hotel to?");
-                Scanner sc = new Scanner (System.in);
-                int prop = sc.nextInt();
-                Property temp = ((Property)this.ownedProperties.get(prop));
-                if (temp.getHouses() >= 4) {
-                    if (hasFunds(temp.getHousePrice())) {
-                        this.debit(temp.getHousePrice());
-                        temp.setHotel(temp.getHotel()+1);
-                        temp.setRent(temp.getRent()*1.5);
-                    }
-                    else {
-                        System.out.println("You don't have the money on hand to pay for a hotel.");
-                        playTurn();
-                    }
-                } else {
-                    System.out.println("You do not have enough houses to buy a hotel!");
-                    playTurn();
-                }
-            }
-
+            addHousesOrHotels();
         }
         else if (option == 3) {
             trade();
@@ -319,6 +290,57 @@ public class Player implements Pieces{
         System.out.println("Jail Cards Owned: ");
         System.out.println("Land Owned: " + this.ownedProperties);
         System.out.println();
+    }
+
+    private void addHousesOrHotels() {
+        System.out.println("Would you like to add a house or hotel (1/2)?");
+        Scanner scanner = new Scanner(System.in);
+        int response = scanner.nextInt();
+        if (response == 1) {
+            if (this.ownedProperties.size() == 0) {
+                System.out.println("You do not have any properties!");
+                playTurn();
+            } else {
+                displayHouses();
+                System.out.println("Which property would you like to add a house to?");
+                Scanner sc = new Scanner (System.in);
+                int prop = sc.nextInt();
+                House temp = ((House)this.ownedProperties.get(prop));
+                if (hasFunds(temp.getHousePrice())){
+                    this.debit(temp.getHousePrice());
+                    temp.setHouses(temp.getHouses() + 1);
+                    temp.setRent(temp.getRent() * 1.25);
+                } else {
+                    playTurn();
+                }
+            }
+        }
+        else {
+            if (this.ownedProperties.size() == 0) {
+                System.out.println("You do not have any properties!");
+                playTurn();
+            } else {
+                displayProperties();
+                System.out.println("Which property would you like to add a hotel to?");
+                Scanner sc = new Scanner (System.in);
+                int prop = sc.nextInt();
+                House temp = ((House)this.ownedProperties.get(prop));
+                if (temp.getHouses() >= 4) {
+                    if (hasFunds(temp.getHousePrice())) {
+                        this.debit(temp.getHousePrice());
+                        temp.setHotel(temp.getHotel()+1);
+                        temp.setRent(temp.getRent()*1.5);
+                    }
+                    else {
+                        System.out.println("You don't have the money on hand to pay for a hotel.");
+                        playTurn();
+                    }
+                } else {
+                    System.out.println("You do not have enough houses to buy a hotel!");
+                    playTurn();
+                }
+            }
+        }
     }
 
     public void trade() {
@@ -348,7 +370,7 @@ public class Player implements Pieces{
         int count = 0;
         ArrayList<SquareType> mortgagedProperties = new ArrayList<>();
         for (SquareType s: this.ownedProperties) {
-            if (s.getTileType().equalsIgnoreCase(SquareType.TYPE_PROPERTY) && ((Property)s).isMortgaged()) {
+            if (s.isProperty() && ((Property)s).isMortgaged()) {
                 System.out.println(count + " - " + s.getName());
                 mortgagedProperties.add(s);
                 count++;
@@ -418,23 +440,21 @@ public class Player implements Pieces{
         }
         movePlayer(sum);
         System.out.println("Moving to Position: " + this.squareType.getPosition() + " Name: "  + this.squareType.getName());
-        if (this.squareType.getTileType().equals(SquareType.TYPE_PROPERTY)) {
+        if (this.squareType.isProperty()) {
             buyOrRentProperty();
-        } else if (this.squareType.getTileType().equals(SquareType.TYPE_TAX)) {
+        } else if (this.squareType.isTax()) {
             payTax();
-        } else if (this.squareType.getTileType().equals(SquareType.TYPE_GOTOJAIL)) {
+        } else if (this.squareType.isGoToJail()) {
             movePlayer(11, false);
             setInJail(true);
-        } else if (this.squareType.getTileType().equals(SquareType.TYPE_JAIL)) {
+        } else if (this.squareType.isGo()) {
             //@TODO
-        } else if (this.squareType.getTileType().equals(SquareType.TYPE_UTILITIES)) {
+        } else if (this.squareType.isUtilities()) {
             buyOrRentUtilities(sum);
-        }  else if (this.squareType.getTileType().equals(SquareType.TYPE_CHANCE)) {
+        }  else if (this.squareType.isChance()) {
             chance();
-        } else if (this.squareType.getTileType().equals(SquareType.TYPE_FREEPARKING)) {
+        } else if (this.squareType.isFreeParking()) {
             //do nothing
-        } else if (this.squareType.getTileType().equals(SquareType.TYPE_GO)) {
-            //do nothing - crediting player $200 is already done in movePlayer method
         }
     }
 

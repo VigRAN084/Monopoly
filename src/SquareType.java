@@ -10,7 +10,8 @@ public abstract class SquareType {
     public static String TYPE_CHANCE = "Chance";
     public static String TYPE_TAX = "Tax";
     public static String TYPE_UTILITIES = "Utilities";
-
+    public static String TYPE_HOUSE = "House";
+    public static String TYPE_RAILROAD = "Railroad";
 
     private String tileType;
     private String name;
@@ -121,6 +122,32 @@ public abstract class SquareType {
         this.playersOnSpace.remove(p);
     }
 
+    public boolean isProperty() {
+        return (this.getTileType().equals(SquareType.TYPE_HOUSE) || this.getTileType().equals(SquareType.TYPE_RAILROAD));
+    }
 
-
+    public boolean isHouse() {
+        return (this.getTileType().equals(SquareType.TYPE_HOUSE));
+    }
+    public boolean isTax() {
+        return (this.getTileType().equals(SquareType.TYPE_TAX));
+    }
+    public boolean isJail() {
+        return (this.getTileType().equals(SquareType.TYPE_JAIL));
+    }
+    public boolean isChance() {
+        return (this.getTileType().equals(SquareType.TYPE_CHANCE));
+    }
+    public boolean isFreeParking() {
+        return (this.getTileType().equals(SquareType.TYPE_FREEPARKING));
+    }
+    public boolean isGo() {
+        return (this.getTileType().equals(SquareType.TYPE_GO));
+    }
+    public boolean isGoToJail() {
+        return (this.getTileType().equals(SquareType.TYPE_GOTOJAIL));
+    }
+    public boolean isUtilities() {
+        return (this.getTileType().equals(SquareType.TYPE_UTILITIES));
+    }
 }

@@ -8,52 +8,52 @@ public class Board {
     Hashtable<Integer,int[]> positionMap = new Hashtable<Integer,int[]>();
     //Left Column
     SquareType SQ_0_0 = new FreeParking( 21);
-    SquareType SQ_1_0 = new Property("Wardell Arena", 17, 75, 123, 140, true, 20);
-    SquareType SQ_2_0 = new Property("Paper Center", 14, 68, 115, 130, true, 19);
+    SquareType SQ_1_0 = new House("Wardell Arena", 17, 75, 123, 140, true, 20);
+    SquareType SQ_2_0 = new House("Paper Center", 14, 68, 115, 130, true, 19);
     SquareType SQ_3_0 = new Chance(18);
-    SquareType SQ_4_0 = new Property("Shopping Center", 14, 68, 115, 130, true, 17);
-    SquareType SQ_5_0 = new Property("Old Railroad", 20, 68, 0, 140, true, 16);
-    SquareType SQ_6_0 = new Property("Manhattan Terrace", 12, 64, 109, 118, true, 15);
-    SquareType SQ_7_0 = new Property("Liverpool Boulevard",12, 64, 109, 118, true, 14);
+    SquareType SQ_4_0 = new House("Shopping Center", 14, 68, 115, 130, true, 17);
+    SquareType SQ_5_0 = new Railroad("Old Railroad", 20, 68, 140, true, 16);
+    SquareType SQ_6_0 = new House("Manhattan Terrace", 12, 64, 109, 118, true, 15);
+    SquareType SQ_7_0 = new House("Liverpool Boulevard",12, 64, 109, 118, true, 14);
     SquareType SQ_8_0 = new Utilities(135, "Java Electrics", 13, true);
-    SquareType SQ_9_0 = new Property("Carnegie Street", 12, 64, 109, 118, true, 12);
+    SquareType SQ_9_0 = new House("Carnegie Street", 12, 64, 109, 118, true, 12);
     SquareType SQ_10_0 = new Jail(11);
 
 
     //Top Row
-    SquareType SQ_0_1 = new Property("MSJ Property", 22, 90, 140, 155, true, 22);
+    SquareType SQ_0_1 = new House("MSJ Property", 22, 90, 140, 155, true, 22);
     SquareType SQ_0_2 = new Chance(23);
-    SquareType SQ_0_3 = new Property("Fremont Avenue", 22, 90, 140, 155, true, 24);
-    SquareType SQ_0_4 = new Property("Calculus Mansion", 25, 102, 140, 155, true, 25);
-    SquareType SQ_0_5 = new Property("Gomes Railroad", 29, 96, 0,150, true, 26);
-    SquareType SQ_0_6 = new Property("Hopkin's Boulevard", 27, 106, 140, 170, true, 27);
-    SquareType SQ_0_7 = new Property("Green Town Home",27, 106, 140, 170, true, 28);
+    SquareType SQ_0_3 = new House("Fremont Avenue", 22, 90, 140, 155, true, 24);
+    SquareType SQ_0_4 = new House("Calculus Mansion", 25, 102, 140, 155, true, 25);
+    SquareType SQ_0_5 = new Railroad("Gomes Railroad", 29, 96,150, true, 26);
+    SquareType SQ_0_6 = new House("Hopkin's Boulevard", 27, 106, 140, 170, true, 27);
+    SquareType SQ_0_7 = new House("Green Town Home",27, 106, 140, 170, true, 28);
     SquareType SQ_0_8 = new Utilities(75, "H20 Aqueducts", 29,true);
-    SquareType SQ_0_9 = new Property("California Parkway",27, 106, 140, 170, true, 30);
+    SquareType SQ_0_9 = new House("California Parkway",27, 106, 140, 170, true, 30);
     SquareType SQ_0_10 = new GoToJail(31);
 
     //Right Column
-    SquareType SQ_1_10 = new Property("Atlantic Complex", 35, 120, 180, 225, true, 32);
-    SquareType SQ_2_10 = new Property("Recursive Penthouse", 35, 120, 180, 225, true, 33);
+    SquareType SQ_1_10 = new House("Atlantic Complex", 35, 120, 180, 225, true, 32);
+    SquareType SQ_2_10 = new House("Recursive Penthouse", 35, 120, 180, 225, true, 33);
     SquareType SQ_3_10 = new Chance(34);
-    SquareType SQ_4_10 = new Property("Mirage Estate", 50, 160, 200, 233, true, 35);
-    SquareType SQ_5_10 = new Property("Expensive Railroad", 40, 150, 0, 220, true, 36);
-    SquareType SQ_6_10 = new Property("Daytona Palace",50, 160, 200, 233, true, 37);
-    SquareType SQ_7_10 = new Property("Simmons Park", 58, 176, 222, 245, true, 38);
+    SquareType SQ_4_10 = new House("Mirage Estate", 50, 160, 200, 233, true, 35);
+    SquareType SQ_5_10 = new Railroad("Expensive Railroad", 40, 150, 220, true, 36);
+    SquareType SQ_6_10 = new House("Daytona Palace",50, 160, 200, 233, true, 37);
+    SquareType SQ_7_10 = new House("Simmons Park", 58, 176, 222, 245, true, 38);
     SquareType SQ_8_10 = new Tax(39);
-    SquareType SQ_9_10 = new Property("Beachfront", 58, 176, 222, 245, true, 40);
+    SquareType SQ_9_10 = new House("Beachfront", 58, 176, 222, 245, true, 40);
 
     //Bottom Row
     SquareType SQ_10_10 = new Go();
-    SquareType SQ_10_9 = new Property("Greece Home", 6, 48, 95, 105, true, 2);
+    SquareType SQ_10_9 = new House("Greece Home", 6, 48, 95, 105, true, 2);
     SquareType SQ_10_8 = new Chance(3);
-    SquareType SQ_10_7 = new Property("Santana Road", 6, 48, 95, 105, true, 4);
+    SquareType SQ_10_7 = new House("Santana Road", 6, 48, 95, 105, true, 4);
     SquareType SQ_10_6 = new Tax(5);
-    SquareType SQ_10_5 = new Property("Nevada Street", 9, 53, 99, 109, true, 6);
-    SquareType SQ_10_4 = new Property("South Railroad", 9, 53, 0, 109, true, 7);
-    SquareType SQ_10_3 = new Property("Berkeley Avenue", 14, 59, 102, 111, true, 8);
+    SquareType SQ_10_5 = new House("Nevada Street", 9, 53, 99, 109, true, 6);
+    SquareType SQ_10_4 = new Railroad("South Railroad", 9, 53, 109, true, 7);
+    SquareType SQ_10_3 = new House("Berkeley Avenue", 14, 59, 102, 111, true, 8);
     SquareType SQ_10_2 = new Chance(9);
-    SquareType SQ_10_1 = new Property("Retro Apartments", 14, 59, 102, 111, true, 10);
+    SquareType SQ_10_1 = new House("Retro Apartments", 14, 59, 102, 111, true, 10);
 
 
     public Board () {
