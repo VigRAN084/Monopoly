@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Player implements Pieces{
     public static String[] PLAY_OPTIONS = {
             "1: Roll",
-            "2: Add Houses or Hotels",
+            "2: Add Houses",
             "3: Trade with opponent",
             "4: Mortgage A Property",
             "5: Unmortgage",
@@ -267,7 +267,7 @@ public class Player implements Pieces{
             roll();
         }
         else if (option == 2) {
-            addHousesOrHotels();
+            addHouses();
         }
         else if (option == 3) {
             trade();
@@ -292,53 +292,28 @@ public class Player implements Pieces{
         System.out.println();
     }
 
-    private void addHousesOrHotels() {
-        System.out.println("Would you like to add a house or hotel (1/2)?");
-        Scanner scanner = new Scanner(System.in);
-        int response = scanner.nextInt();
-        if (response == 1) {
-            if (this.ownedProperties.size() == 0) {
-                System.out.println("You do not have any properties!");
-                playTurn();
-            } else {
-                displayHouses();
-                System.out.println("Which property would you like to add a house to?");
-                Scanner sc = new Scanner (System.in);
-                int prop = sc.nextInt();
-                House temp = ((House)this.ownedProperties.get(prop));
-                if (hasFunds(temp.getHousePrice())){
-                    this.debit(temp.getHousePrice());
-                    temp.setHouses(temp.getHouses() + 1);
-                    temp.setRent(temp.getRent() * 1.25);
-                } else {
-                    playTurn();
-                }
+    private void addHouses() {
+        if (this.ownedProperties.size() == 0) {
+            System.out.println("You do not have any properties!");
+            playTurn();
+        } else {
+            displayHouses();
+            System.out.println("Which property would you like to add a house to?");
+            Scanner sc = new Scanner (System.in);
+            int prop = sc.nextInt();
+            House house = ((House)this.ownedProperties.get(prop));
+            double housePrice = house.getHousePrice();
+            boolean haveMoney = hasFunds(housePrice);
+            if (!haveMoney) {
+                System.out.println("You don't have enough balance to add a house");
+                raiseFunds(housePrice);
             }
-        }
-        else {
-            if (this.ownedProperties.size() == 0) {
-                System.out.println("You do not have any properties!");
-                playTurn();
+            if (haveMoney){
+                this.debit(housePrice);
+                house.addHouse();
             } else {
-                displayProperties();
-                System.out.println("Which property would you like to add a hotel to?");
-                Scanner sc = new Scanner (System.in);
-                int prop = sc.nextInt();
-                House temp = ((House)this.ownedProperties.get(prop));
-                if (temp.getHouses() >= 4) {
-                    if (hasFunds(temp.getHousePrice())) {
-                        this.debit(temp.getHousePrice());
-                        temp.setHotel(temp.getHotel()+1);
-                        temp.setRent(temp.getRent()*1.5);
-                    }
-                    else {
-                        System.out.println("You don't have the money on hand to pay for a hotel.");
-                        playTurn();
-                    }
-                } else {
-                    System.out.println("You do not have enough houses to buy a hotel!");
-                    playTurn();
-                }
+                System.out.println("You don't have any balance to pay tax");
+                playTurn();
             }
         }
     }

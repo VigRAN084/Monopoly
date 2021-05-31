@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Property extends SquareType {
     private double rent;
     private double mortgageValue;
@@ -7,8 +5,7 @@ public class Property extends SquareType {
 
     private boolean mortgaged;
 
-    private int houses = 0;
-    private int hotel = 0;
+
 
     public Property(String name, String type, double rent, double mortgageValue, double propertyValue, boolean isAvailable, int position) {
         super(type, name,  isAvailable, position);
@@ -48,21 +45,6 @@ public class Property extends SquareType {
         this.mortgaged = mortgaged;
     }
 
-    public int getHouses() {
-        return houses;
-    }
-
-    public void setHouses(int houses) {
-        this.houses = houses;
-    }
-
-    public int getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(int hotel) {
-        this.hotel = hotel;
-    }
 
 
 }
