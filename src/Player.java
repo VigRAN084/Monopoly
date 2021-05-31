@@ -112,30 +112,80 @@ public class Player implements Pieces{
         this.inJail = inJail;
     }
 
-    private void raiseFunds(double amount) {
-        double totalFunds = totalPropertyValue() + this.money;
-        if (totalFunds < amount) {
-            System.out.println("Unable to raise funds since your total property worth + current funds " +
-                    "is less than the amount needed");
-            this.hasLostGame = true;
-            return;
+
+
+    public void playTurn() {
+        if (!this.isMyTurn()) return;
+        System.out.println("Player " + name + "'s turn");
+        int option = promptOption();
+        if (option == 1){
+            roll();
         }
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Would you like to mortgage or sell any one of your properties? (Y/n): ");
-        String response = scanner.nextLine();
-        if (response.equalsIgnoreCase("Y")){
-            System.out.println("Would you like to mortgage or sell? Select '1' for mortgage " +
-                    "and '2' for sell");
-            int userResponse = scanner.nextInt();
-            if (userResponse == 1) {
-                mortgage();
+        else if (option == 2) {
+            addHouses();
+        }
+        else if (option == 3) {
+            trade();
+        }
+        else if (option == 4) {
+            mortgageProperty();
+        }
+        else if (option == 5) {
+            unmortgageProperty();
+        }
+        else if (option == 6) {
+            if (quitGame()) {
+                return;
             } else {
-                sell(true);
+                playTurn();
             }
-        } else {
-            this.hasLostGame = true;
+        }
+        System.out.println("Player " + this.getName() + " summary:");
+        System.out.println("\nMoney: $" + this.getMoney());
+        System.out.println("Jail Cards Owned: ");
+        System.out.println("Land Owned: " + this.ownedProperties);
+        System.out.println();
+    }
+
+    private void roll () {
+        int dice1 = diceValue();
+        int dice2 = diceValue();
+        int sum = dice1 + dice2;
+        boolean isDouble = (dice1 == dice2);
+        System.out.println("Rolling ... dice1: " + dice1 + " , dice2: " + dice2);
+        if (this.inJail) {
+            if (!isDouble) {
+                System.out.println("You are currently in jail. You need to roll " +
+                        "a double to exit.");
+                return;
+            } else {
+                System.out.println("Congratulations! You just rolled a double and exited jail.");
+                this.setInJail(false);
+            }
+        }
+        movePlayer(sum);
+        System.out.println("Moving to Position: " + this.squareType.getPosition() + " Name: "  + this.squareType.getName());
+        if (this.squareType.isProperty()) {
+            buyOrRentProperty();
+        } else if (this.squareType.isTax()) {
+            payTax();
+        } else if (this.squareType.isGoToJail()) {
+            movePlayer(11, false);
+            setInJail(true);
+        } else if (this.squareType.isGo()) {
+            //@TODO
+        } else if (this.squareType.isUtilities()) {
+            buyOrRentUtilities(sum);
+        }  else if (this.squareType.isChance()) {
+            chance();
+        } else if (this.squareType.isFreeParking()) {
+            //do nothing
         }
     }
+
+
+
+
 
     public int totalPropertyValue() {
         int count = 0;
@@ -179,7 +229,7 @@ public class Player implements Pieces{
                 SquareType property = this.ownedProperties.get(input);
                 double propertyValue = ((Property)property).getPropertyValue();
 
-                boolean defaultingToBank = false;
+                boolean defaultBankAsBuyer = false;
                 if (buyer == 1) {
                     System.out.println(this.opponent.getName() + ", would you like to buy this property? (Y/n)");
                     Scanner sc = new Scanner(System.in);
@@ -187,7 +237,7 @@ public class Player implements Pieces{
                     if (opponentResponse.equalsIgnoreCase("Y")) {
                         boolean hasFunds = this.opponent.hasFunds(propertyValue);
                         if (!hasFunds) {
-                            defaultingToBank = true;
+                            defaultBankAsBuyer = true;
                         }
                         else {
                             double pVal = 0.0;
@@ -208,10 +258,10 @@ public class Player implements Pieces{
                         }
                     } else {
                         System.out.println(this.name + ", you cannot sell the property to your opponent. Choosing bank as the default");
-                        defaultingToBank = true;
+                        defaultBankAsBuyer = true;
                     }
                 }
-                if (buyer == 2 || defaultingToBank) {
+                if (buyer == 2 || defaultBankAsBuyer) {
                     if (property.isProperty() && ((Property)property).isMortgaged()) {
                         credit(propertyValue - ((Property)property).getMortgageValue());
                     } else {
@@ -257,39 +307,6 @@ public class Player implements Pieces{
             }
 
         }
-    }
-
-    public void playTurn() {
-        if (!this.isMyTurn()) return;
-        System.out.println("Player " + name + "'s turn");
-        int option = promptOption();
-        if (option == 1){
-            roll();
-        }
-        else if (option == 2) {
-            addHouses();
-        }
-        else if (option == 3) {
-            trade();
-        }
-        else if (option == 4) {
-            mortgageProperty();
-        }
-        else if (option == 5) {
-            unmortgageProperty();
-        }
-        else if (option == 6) {
-            if (quitGame()) {
-                return;
-            } else {
-                playTurn();
-            }
-        }
-        System.out.println("Player " + this.getName() + " summary:");
-        System.out.println("\nMoney: $" + this.getMoney());
-        System.out.println("Jail Cards Owned: ");
-        System.out.println("Land Owned: " + this.ownedProperties);
-        System.out.println();
     }
 
     private void addHouses() {
@@ -395,42 +412,6 @@ public class Player implements Pieces{
             }
         }
         return optionNum;
-    }
-
-    private void roll () {
-        int dice1 = diceValue();
-        int dice2 = diceValue();
-        int sum = dice1 + dice2;
-        boolean isDouble = (dice1 == dice2);
-        System.out.println("Rolling ... dice1: " + dice1 + " , dice2: " + dice2);
-        if (this.inJail) {
-            if (!isDouble) {
-                System.out.println("You are currently in jail. You need to roll " +
-                        "a double to exit.");
-                return;
-            } else {
-                System.out.println("Congratulations! You just rolled a double and exited jail.");
-                this.setInJail(false);
-            }
-        }
-        movePlayer(sum);
-        System.out.println("Moving to Position: " + this.squareType.getPosition() + " Name: "  + this.squareType.getName());
-        if (this.squareType.isProperty()) {
-            buyOrRentProperty();
-        } else if (this.squareType.isTax()) {
-            payTax();
-        } else if (this.squareType.isGoToJail()) {
-            movePlayer(11, false);
-            setInJail(true);
-        } else if (this.squareType.isGo()) {
-            //@TODO
-        } else if (this.squareType.isUtilities()) {
-            buyOrRentUtilities(sum);
-        }  else if (this.squareType.isChance()) {
-            chance();
-        } else if (this.squareType.isFreeParking()) {
-            //do nothing
-        }
     }
 
     //public static String[] chanceCards = {"Get $200", "Pay $200", "Go To Jail", "Go To 'Go'",
@@ -578,13 +559,33 @@ public class Player implements Pieces{
         }
     }
 
+    private void raiseFunds(double amount) {
+        double totalFunds = totalPropertyValue() + this.money;
+        if (totalFunds < amount) {
+            System.out.println("Unable to raise funds since your total property worth + current funds " +
+                    "is less than the amount needed");
+            this.hasLostGame = true;
+            return;
+        }
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Would you like to mortgage or sell any one of your properties? (Y/n): ");
+        String response = scanner.nextLine();
+        if (response.equalsIgnoreCase("Y")){
+            System.out.println("Would you like to mortgage or sell? Select '1' for mortgage " +
+                    "and '2' for sell");
+            int userResponse = scanner.nextInt();
+            if (userResponse == 1) {
+                mortgage();
+            } else {
+                sell(true);
+            }
+        } else {
+            this.hasLostGame = true;
+        }
+    }
+
     private int diceValue () {
         return (int)((Math.random() * 6) + 1);
     }
-
-    private boolean ownsProperties() {
-        return this.ownedProperties.size() > 0;
-    }
-
-
+    
 }
