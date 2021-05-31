@@ -1,11 +1,19 @@
+//Vignesh Rangarajan
+//Period 1
+//5/30/2021
+//Monopoly
 import java.util.*;
 public class Board {
 
     public static Board newBoard = new Board();
 
-    private SquareType[][] squareTypes = new SquareType[11][11];
+    private SquareType[][] squareTypes = new SquareType[11][11]; //board of Monopoly squares
 
+    /**
+     * Hashtable holding the monopoly squares
+     */
     Hashtable<Integer,int[]> positionMap = new Hashtable<Integer,int[]>();
+
     //Left Column
     SquareType SQ_0_0 = new FreeParking( 21);
     SquareType SQ_1_0 = new House("Wardell Arena", 17, 75, 123, 140, true, 20);
@@ -61,6 +69,9 @@ public class Board {
         initializePositionMap();
     }
 
+    /**
+     * assigns the elements of the 2D array to the squareTypes listed above
+     */
     public void initializeSquares() {
         squareTypes[0][0] = SQ_0_0;
         squareTypes[0][1] = SQ_0_1;
@@ -109,6 +120,9 @@ public class Board {
         }
     }
 
+    /**
+     * initializes the position map (hashtable listed above)
+     */
     public void initializePositionMap() {
         positionMap.put(1,new int[]{10,10});
         positionMap.put(2,new int[]{10,9});
@@ -155,6 +169,12 @@ public class Board {
         positionMap.put(40,new int[]{9,10});
     }
 
+    /**
+     * get the square at a certain x,y position
+     * @param x
+     * @param y
+     * @return
+     */
     public SquareType getSquare(int x, int y) {
         if (x < 11 && y < 11 && x >= 0 && y >= 0){
             return squareTypes[x][y];
@@ -162,12 +182,23 @@ public class Board {
         else return null;
     }
 
+    /**
+     * set the square at a certain x,y position
+     * @param s
+     * @param x
+     * @param y
+     */
     public void setSquare(SquareType s, int x, int y) {
         if (x < 11 && y < 11 && x >= 0 && y >= 0){
             squareTypes[x][y] = s;
         }
     }
 
+    /**
+     * get square at a certain position on the board
+     * @param position
+     * @return
+     */
     public SquareType getSquare(int position) {
         int[] xycoords = positionMap.get(position);
         if (xycoords == null) return null;
@@ -176,6 +207,11 @@ public class Board {
         }
     }
 
+    /**
+     * set the square at a certain position on the board
+     * @param s
+     * @param position
+     */
     public void setSquare(SquareType s, int position) {
         int[] xycoords = positionMap.get(position);
         if (xycoords == null) return;
@@ -184,6 +220,9 @@ public class Board {
         }
     }
 
+    /**
+     * print the board
+     */
     public void printBoard() {
         for (SquareType[] arr: squareTypes){
             for (SquareType s: arr){

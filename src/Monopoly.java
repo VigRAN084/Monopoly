@@ -1,13 +1,23 @@
+//Vignesh Rangarajan
+//Period 1
+//5/30/2021
+//Monopoly
 public class Monopoly {
 
     private Player p1;
     private Player p2;
     Board board = Board.newBoard;
-    public static double INITIAL_MONEY = 1200;
+    public static double INITIAL_MONEY = 1200; //initial money the players start with
 
+    /**
+     * Play game method
+     */
     public void playGame() {
         addPlayers();
         Player currPlayer = p1;
+        /**
+         * While loop for playing the game until a player loses
+         */
         while (true) {
             currPlayer.playTurn();
             if (currPlayer.hasLostGame()) {
@@ -22,6 +32,9 @@ public class Monopoly {
         }
     }
 
+    /**
+     * Add players to the game
+     */
     private void addPlayers() {
         SquareType s = board.getSquare(1);
 
@@ -42,6 +55,10 @@ public class Monopoly {
         p2.setOpponent(p1);
     }
 
+    /**
+     * Switch turns in the game
+     * @return
+     */
     private Player togglePlayer() {
         if (p1.isMyTurn()){
             p1.setMyTurn(false);
@@ -54,6 +71,10 @@ public class Monopoly {
         }
     }
 
+    /**
+     * main method, which plays the game
+     * @param args
+     */
     public static void main(String[] args){
         Monopoly m = new Monopoly();
         m.playGame();

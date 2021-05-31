@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public abstract class SquareType {
+    //different SquareTypes
     public static final String BLANK = "  ";
     public static String TYPE_JAIL = "Jail";
     public static String TYPE_GO = "Go";
@@ -20,6 +21,7 @@ public abstract class SquareType {
     private Player ownedBy;
     private ArrayList<Player> playersOnSpace = new ArrayList<>();
 
+    //getters and setters
     public ArrayList<Player> getPlayersOnSpace() {
         return playersOnSpace;
     }
@@ -71,6 +73,7 @@ public abstract class SquareType {
         this.ownedBy = ownedBy;
     }
 
+    //constructors for SquareType class
     public SquareType(){}
 
     public SquareType(String tileType, String name, /*int rent, int mortgageValue, int housePrice,
@@ -81,48 +84,96 @@ public abstract class SquareType {
         this.position = position;
     }
 
-
-
-
-
+    /**
+     * determines if the SquareType is a property
+     * @return
+     */
     public boolean isProperty() {
         return (this.getTileType().equals(SquareType.TYPE_HOUSE) || this.getTileType().equals(SquareType.TYPE_RAILROAD)
                 || this.getTileType().equals(SquareType.TYPE_HOTEL));
     }
 
+    /**
+     * determines if the SquareType is a house
+     * @return
+     */
     public boolean isHouse() {
         return (this.getTileType().equals(SquareType.TYPE_HOUSE) || this.getTileType().equals(SquareType.TYPE_HOTEL));
     }
+
+    /**
+     * determines if the SquareType is a tax square
+     * @return
+     */
     public boolean isTax() {
         return (this.getTileType().equals(SquareType.TYPE_TAX));
     }
+    /**
+     * determines if the SquareType is a jail square
+     * @return
+     */
     public boolean isJail() {
         return (this.getTileType().equals(SquareType.TYPE_JAIL));
     }
+    /**
+     * determines if the SquareType is a chance square
+     * @return
+     */
     public boolean isChance() {
         return (this.getTileType().equals(SquareType.TYPE_CHANCE));
     }
+    /**
+     * determines if the SquareType is a free parking square
+     * @return
+     */
     public boolean isFreeParking() {
         return (this.getTileType().equals(SquareType.TYPE_FREEPARKING));
     }
+    /**
+     * determines if the SquareType is a Go square
+     * @return
+     */
     public boolean isGo() {
         return (this.getTileType().equals(SquareType.TYPE_GO));
     }
+    /**
+     * determines if the SquareType is a Go To Jail square
+     * @return
+     */
     public boolean isGoToJail() {
         return (this.getTileType().equals(SquareType.TYPE_GOTOJAIL));
     }
+    /**
+     * determines if the SquareType is a Utilities square
+     * @return
+     */
     public boolean isUtilities() {
         return (this.getTileType().equals(SquareType.TYPE_UTILITIES));
     }
     public String toString() {
         return this.position + ": " + this.name;
     }
+
+    /**
+     * adds player to space
+     * @param p
+     */
     public void addPlayerOnSpace(Player p){
         this.playersOnSpace.add(p);
     }
+
+    /**
+     * removes player from space
+     * @param p
+     */
     public void removePlayerOnSpace(Player p) {
         this.playersOnSpace.remove(p);
     }
+
+    /**
+     * prints a square
+     * @return
+     */
     public String printSquare() {
         String s = this.name;
         if (!s.equals(BLANK)){

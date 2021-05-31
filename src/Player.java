@@ -5,6 +5,7 @@ import java.util.Scanner;
  * Player class
  */
 public class Player implements Pieces{
+    //different options the player can do in a turn
     public static String[] PLAY_OPTIONS = {
             "1: Roll",
             "2: Add Houses",
@@ -16,19 +17,21 @@ public class Player implements Pieces{
     };
 
 
-    private String name;
-    private double money;
-    private boolean myTurn = false;
+    private String name; //player name
+    private double money; //amount of money player has
+    private boolean myTurn = false; //true if it is the player's turn
     private SquareType squareType = null;
     private String owner;
-    private ArrayList<SquareType> ownedProperties = new ArrayList<>();
-    private boolean hasLostGame = false;
-    private Player opponent;
-    private Board board;
-    private boolean inJail = false;
+    private ArrayList<SquareType> ownedProperties = new ArrayList<>(); //ArrayList of owned properties
+    private boolean hasLostGame = false; //determines if player has lost the game
+    private Player opponent; //player representing the opponent
+    private Board board; //Game board
+    private boolean inJail = false; //determines if the player is in jail
 
+    //constructor
     public Player() {}
 
+    //getters and setters
     public String getName() {
         return name;
     }
@@ -87,14 +90,28 @@ public class Player implements Pieces{
         this.opponent = opponent;
     }
 
+
+    /**
+     * credits money to the player
+     * @param m
+     */
     private void credit(double m) {
         this.money += m;
     }
 
+    /**
+     * debits money from the player
+     * @param m
+     */
     private void debit(double m) {
         this.money -= m;
     }
 
+    /**
+     * determines if the player has sufficient funds
+     * @param m
+     * @return
+     */
     private boolean hasFunds(double m) {
         return this.money > m;
     }
