@@ -14,12 +14,15 @@ public abstract class SquareType {
     public static String TYPE_RAILROAD = "Railroad";
     public static String TYPE_HOTEL = "Hotel";
 
+
+
     private String tileType;
     private String name;
     private boolean isAvailable;
     private int position;
     private Player ownedBy;
     private ArrayList<Player> playersOnSpace = new ArrayList<>();
+    private String colorGroup;
 
     //getters and setters
     public ArrayList<Player> getPlayersOnSpace() {
@@ -82,6 +85,15 @@ public abstract class SquareType {
         this.name = name;
         this.isAvailable = isAvailable;
         this.position = position;
+        this.colorGroup = ColorGroup.getColorGroup(this.position);
+    }
+
+    public String getColorGroup() {
+        return colorGroup;
+    }
+
+    public void setColorGroup(String colorGroup) {
+        this.colorGroup = colorGroup;
     }
 
     /**

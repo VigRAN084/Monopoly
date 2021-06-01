@@ -188,6 +188,12 @@ public class Player implements Pieces{
                 this.setInJail(false);
             }
         }
+        else {
+            if (isDouble) {
+                System.out.println("You rolled a double and earned a chance card!");
+                chance();
+            }
+        }
         movePlayer(sum);
         System.out.println("Moving to Position: " + this.squareType.getPosition() + " Name: "  + this.squareType.getName());
         if (this.squareType.isProperty()) {
@@ -234,16 +240,16 @@ public class Player implements Pieces{
      */
     private void handleSell(boolean sellToOpponent) {
         if (this.ownedProperties.size() == 0) {
-            System.out.println(this.name + ", you don't have any properties to handleSell!");
+            System.out.println(this.name + ", you don't have any properties to sell!");
             playTurn();
             return;
         }
         Scanner scanner = new Scanner (System.in);
-        System.out.println(this.name + ", which property would you like to handleSell (-1 if don't want to handleSell)? Enter the index: ");
+        System.out.println(this.name + ", which property would you like to sell (-1 if don't want to sell)? Enter the index: ");
         displayProperties();
         int propertyIndex = scanner.nextInt();
         if (propertyIndex == -1) {
-            System.out.println(this.name + " does not want to handleSell any properties!");
+            System.out.println(this.name + " does not want to sell any properties!");
             playTurn();
             return;
         }
@@ -252,7 +258,7 @@ public class Player implements Pieces{
         if (sellToOpponent) {
             buyer = 1;
         } else {
-            System.out.println("Would you like to handleSell the property to the bank or the opponent? (1: opponent; 2: bank");
+            System.out.println("Would you like to sell the property to the bank or the opponent? (1: opponent; 2: bank)");
             buyer = scanner.nextInt();
         }
 
@@ -348,6 +354,11 @@ public class Player implements Pieces{
             Scanner sc = new Scanner (System.in);
             int prop = sc.nextInt();
             House house = ((House)this.ownedProperties.get(prop));
+            if (!ownsColorGroup(house)) {
+                System.out.println("You do not own the color group, so you cannot add houses!");
+                playTurn();
+                return;
+            }
             double housePrice = house.getHousePrice();
             boolean haveMoney = hasFunds(housePrice);
             if (!haveMoney) {
@@ -376,7 +387,7 @@ public class Player implements Pieces{
      * trade properties with the opponent
      */
     private void trade() {
-        System.out.println(this.name + ", would you like to buy or handleSell properties? (1/2)");
+        System.out.println(this.name + ", would you like to buy or sell properties? (1/2)");
         Scanner sc = new Scanner(System.in);
         int response = sc.nextInt();
         if (response == 1) this.opponent.handleSell(true);
@@ -387,7 +398,10 @@ public class Player implements Pieces{
      * mortgage a property
      */
     private void mortgageProperty() {
-        if (ownedProperties.size() <= 0) playTurn();
+        if (ownedProperties.size() <= 0) {
+            System.out.println("You do not have any properties to mortgage!");
+            playTurn();
+        }
         else {
             displayProperties();
             System.out.println("Which property would you like to mortgage?");
@@ -413,6 +427,11 @@ public class Player implements Pieces{
                 mortgagedProperties.add(s);
                 count++;
             }
+        }
+        if (mortgagedProperties.size() <= 0) {
+            System.out.println("You do not have any properties to mortgage. Please choose another move.");
+            playTurn();
+            return;
         }
         Scanner sc = new Scanner (System.in);
         System.out.println("Above are your currently mortgaged properties. Which property would you like to unmortgage?");
@@ -601,6 +620,23 @@ public class Player implements Pieces{
         }
     }
 
+    private boolean ownsColorGroup(House house) {
+        int position = house.getPosition();
+        int[] colorRange = ColorGroup.getColorRange(house.getColorGroup());
+        int startIndex = colorRange[0];
+        int endIndex = colorRange[1];
+        for (int i = startIndex; i <= endIndex; i++) {
+            SquareType s = board.getSquare(i);
+            if (!s.isProperty()) {
+                continue;
+            }
+            if (s.getOwnedBy() == null || !(s.getOwnedBy().getName().equals(this.name))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * quit the game
      * @return
@@ -654,11 +690,11 @@ public class Player implements Pieces{
             return;
         }
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Would you like to mortgage or handleSell any one of your properties? (Y/n): ");
+        System.out.println("Would you like to mortgage or sell any one of your properties? (Y/n): ");
         String response = scanner.nextLine();
         if (response.equalsIgnoreCase("Y")){
-            System.out.println("Would you like to mortgage or handleSell? Select '1' for mortgage " +
-                    "and '2' for handleSell");
+            System.out.println("Would you like to mortgage or sell? Select '1' for mortgage " +
+                    "and '2' for sell");
             int userResponse = scanner.nextInt();
             if (userResponse == 1) {
                 mortgage();
