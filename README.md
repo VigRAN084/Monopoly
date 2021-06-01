@@ -5,11 +5,25 @@ Monopoly.java - This is the main class and it is responsible for drawing a new b
 
 Board.java - Board.java represents the physical monopoly board, which has 40 squares.
 
-SquareType.java (abstract) - Represents every single square on the monopoly. Implements the subclasses Chance.java,
-FreeParking.java, Go.java, GoToJail.java, House.java, Jail.java, Property.java, Railroad.java, Tax.java, and Utilities.java.
+SquareType.java (abstract) - Represents every single square on the monopoly.
 Contains the information about each square on the board, such as position, name, owner, color group, etc.
+Implements the following subclasses:
+1. Chance.java
+2. FreeParking.java
+3. Go.java
+4. GoToJail.java
+5. House.java --- This is in turn inherited by Hotel.java
+6. Jail.java
+7. Property.java
+8. Railroad.java
+9. Tax.java
+10. Utilities.java.
 
-Player.java - Implements pieces and contains all the functionalities of the game. Some of the key methods include:
+Pieces.java
+Interface which has the following methods: getName() and setOwner()
+
+Player.java:
+Implements Pieces.java and contains all the functionalities of the game. Some of the key methods include:
 1. roll() - Roll the dice
 2. playTurn() - Allows user to perform other actions, such as trading houses, mortgaging properties, etc.
 3. handleSell() - Facilitates monetary transactions between players when selling properties to opponent or bank
@@ -27,7 +41,7 @@ Player.java - Implements pieces and contains all the functionalities of the game
 15. raiseFunds() - Helps a user raise funds if they need to pay tax, rent, or want to buy a property but cannot afford.
 16. displayHouses()/displayProperties() - Prints out the user's list of properties/houses
 17. ownsHouse() - Checks that user owns the house
-18. diceValue() - Generates a random dice value from 1 to 6, inclusive. 
+18. diceValue() - Generates a random dice value from 1 to 6, inclusive.
 19. quit() - Quits the game
 
 
