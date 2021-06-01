@@ -1,5 +1,6 @@
 # Monopoly
 ==================================
+
 Important Classes:
 Monopoly.java - This is the main class and it is responsible for drawing a new board and initializing Player 1 and Player 2.
 
@@ -48,6 +49,7 @@ Implements Pieces.java and contains all the functionalities of the game. Some of
 
 
 ==================================
+
 Game Rules
 Welcome to Monopoly! The game involves two players competing to make the other player bankrupt first; one is player A
 and the other is player B. Player A goes first. Each player starts with $1200. Each player is given 6 options in their turn:
