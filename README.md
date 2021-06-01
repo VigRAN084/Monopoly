@@ -1,4 +1,40 @@
 # Monopoly
+==================================
+Important Classes:
+Monopoly.java - This is the main class and it is responsible for drawing a new board and initializing Player 1 and Player 2.
+
+Board.java - Board.java represents the physical monopoly board, which has 40 squares.
+
+SquareType.java (abstract) - Represents every single square on the monopoly. Implements the subclasses Chance.java,
+FreeParking.java, Go.java, GoToJail.java, House.java, Jail.java, Property.java, Railroad.java, Tax.java, and Utilities.java.
+Contains the information about each square on the board, such as position, name, owner, color group, etc.
+
+Player.java - Implements pieces and contains all the functionalities of the game. Some of the key methods include:
+1. roll() - Roll the dice
+2. playTurn() - Allows user to perform other actions, such as trading houses, mortgaging properties, etc.
+3. handleSell() - Facilitates monetary transactions between players when selling properties to opponent or bank
+4. mortgage() - Mortgages user's properties
+5. addHouses() - Adds houses at user's request + verifies user owns color group + automatically adds hotel if 4 or more houses
+6. trade() - Allows users to buy and sell to each other.
+7. unmortgageProperty() - Unmortgages a mortgaged property.
+8. chance() - Randomly selects a chance card and performs the given action.
+9. movePlayer() - (Overloaded method) and moves the user's position on the physical Monopoly Board
+10. payTax() - Facilitates tax payments for the user.
+11. buyOrRentProperty()/buyOrRentUtilities() - Allows users to buy or rent a property/utility.
+12. rent() - Withdraws money from opponent if landed on an owned property.
+13. ownsColorGroup() - Verifies if user owns a certain color group for adding hotels/houses.
+14. buy() - Enables users to buy a certain property.
+15. raiseFunds() - Helps a user raise funds if they need to pay tax, rent, or want to buy a property but cannot afford.
+16. displayHouses()/displayProperties() - Prints out the user's list of properties/houses
+17. ownsHouse() - Checks that user owns the house
+18. diceValue() - Generates a random dice value from 1 to 6, inclusive. 
+19. quit() - Quits the game
+
+
+
+
+==================================
+Game Rules
 Welcome to Monopoly! The game involves two players competing to make the other player bankrupt first; one is player A
 and the other is player B. Player A goes first. Each player starts with $1200. Each player is given 6 options in their turn:
 1. Roll - rolls a dice allowing the player to move forward; player allowed to buy a property if they land on one or performs
